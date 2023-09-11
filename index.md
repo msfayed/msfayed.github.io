@@ -1,6 +1,6 @@
 ---
 layout: default
-title:
+title: Mohammed Fayed Blog
 description:
 ---
 
