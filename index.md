@@ -1,7 +1,15 @@
 ---
 layout: default
 title: Mohammed Fayed Blog
-description:
+description: A playground for my experiments
 ---
 
-# msfayed.github.io
+# My Posts
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {{ post.excerpt }}
+    </li>
+  {% endfor %}
+</ul>
