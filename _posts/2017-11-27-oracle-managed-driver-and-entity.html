@@ -1,0 +1,259 @@
+---
+layout: post
+title: Oracle Managed Driver and Entity Framework Code First in Visual Studio 2013
+date: '2017-11-27T04:51:00.000-04:00'
+author: Mohammed Fayed
+tags:
+- Oracle
+- C#
+- DB
+modified_time: '2019-06-12T03:05:54.483-03:00'
+thumbnail: https://4.bp.blogspot.com/-_aKVo0Nfywo/WhvFOCT33YI/AAAAAAABPHc/MtnY9kUH09oda0mlif_GXWxfzW3HY_azgCLcBGAs/s72-c/AddNewEnityModel.png
+blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-912556462092001228
+blogger_orig_url: https://www.fayed.org/2017/11/oracle-managed-driver-and-entity.html
+---
+
+<div dir="ltr" style="text-align: left;" trbidi="on">
+It's an easy way to get <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Oracle Managed Driver</span> and <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Entity Framework Code First</span> to work properly in Visual Studio 2013 .<br />
+<br />
+We will use&nbsp;<a href="https://www.nuget.org/" target="_blank">nuget </a>packages which is easy and fast but lack some features and to make work correctly I follow the bellow steps :<br />
+<br />
+1- Create New Windows Forms Application and target .Net Framework 4.6.1<br />
+<br />
+2- install <a href="https://www.nuget.org/packages/EntityFramework" target="_blank">EntityFramework&nbsp; </a>by executing<br />
+<br />
+<pre>&nbsp;PM&gt; Install-Package EntityFramework -Version 6.2.0
+</pre>
+<br />
+and we must execut this first because it update the App.Config file correctly so the file will be somthing like :<br />
+<br />
+<pre class="prettyprint lang-xml">&lt;configuration&gt;
+  &lt;configSections&gt;
+    &lt;section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" /&gt;
+  &lt;/configSections&gt;
+  &lt;startup&gt;
+    &lt;supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.1" /&gt;
+  &lt;/startup&gt;
+  &lt;entityFramework&gt;
+    &lt;defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework" /&gt;
+    &lt;providers&gt;
+      &lt;provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" /&gt;
+    &lt;/providers&gt;
+  &lt;/entityFramework&gt;
+&lt;/configuration&gt;
+</pre>
+<br />
+<br />
+3- Install&nbsp;<a href="https://www.nuget.org/packages/Oracle.ManagedDataAccess.EntityFramework/" target="_blank">Oracle.ManagedDataAccess.EntityFramework</a> which will install it's dependency&nbsp;<a href="https://www.nuget.org/packages/Oracle.ManagedDataAccess/" target="_blank">Oracle.ManagedDataAccess</a> also by excute<br />
+<br />
+<pre>PM&gt;&nbsp;Install-Package Oracle.ManagedDataAccess.EntityFramework -Version 12.2.1100
+</pre>
+<br />
+now the App.config file should look like :<br />
+<br />
+<pre class="prettyprint lang-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;configuration&gt;
+&nbsp; &lt;configSections&gt;
+&nbsp; &nbsp; &lt;section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false"/&gt;
+&nbsp; &nbsp; &lt;section name="oracle.manageddataaccess.client" type="OracleInternal.Common.ODPMSectionHandler, Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342"/&gt;
+&nbsp; &lt;/configSections&gt;
+
+&nbsp; &lt;startup&gt;
+&nbsp; &nbsp; &lt;supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.1"/&gt;
+&nbsp; &lt;/startup&gt;
+
+&nbsp; &lt;entityFramework&gt;
+&nbsp; &nbsp; &lt;defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework"/&gt;
+&nbsp; &nbsp; &lt;providers&gt;
+&nbsp; &nbsp; &nbsp; &lt;provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer"/&gt;
+&nbsp; &nbsp; &nbsp; &lt;provider invariantName="Oracle.ManagedDataAccess.Client" type="Oracle.ManagedDataAccess.EntityFramework.EFOracleProviderServices, Oracle.ManagedDataAccess.EntityFramework, Version=6.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342"/&gt;
+&nbsp; &nbsp; &lt;/providers&gt;
+&nbsp; &lt;/entityFramework&gt;
+
+&nbsp; &lt;system.data&gt;
+&nbsp; &nbsp; &lt;DbProviderFactories&gt;
+&nbsp; &nbsp; &nbsp; &lt;remove invariant="Oracle.ManagedDataAccess.Client"/&gt;
+&nbsp; &nbsp; &nbsp; &lt;add name="ODP.NET, Managed Driver" invariant="Oracle.ManagedDataAccess.Client" description="Oracle Data Provider for .NET, Managed Driver" type="Oracle.ManagedDataAccess.Client.OracleClientFactory, Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342"/&gt;
+&nbsp; &nbsp; &lt;/DbProviderFactories&gt;
+&nbsp; &lt;/system.data&gt;
+
+&nbsp; &lt;runtime&gt;
+&nbsp; &nbsp; &lt;assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1"&gt;
+&nbsp; &nbsp; &nbsp; &lt;dependentAssembly&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;publisherPolicy apply="no"/&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;assemblyIdentity name="Oracle.ManagedDataAccess" publicKeyToken="89b483f429c47342" culture="neutral"/&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;bindingRedirect oldVersion="4.121.0.0 - 4.65535.65535.65535" newVersion="4.122.1.0"/&gt;
+&nbsp; &nbsp; &nbsp; &lt;/dependentAssembly&gt;
+&nbsp; &nbsp; &lt;/assemblyBinding&gt;
+  &lt;/runtime&gt;
+
+&nbsp; &lt;oracle.manageddataaccess.client&gt;
+&nbsp; &nbsp; &lt;version number="*"&gt;
+&nbsp; &nbsp; &nbsp; &lt;dataSources&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;dataSource alias="SampleDataSource" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL))) "/&gt;
+&nbsp; &nbsp; &nbsp; &lt;/dataSources&gt;
+&nbsp; &nbsp; &lt;/version&gt;
+&nbsp; &lt;/oracle.manageddataaccess.client&gt;
+
+&nbsp; &lt;connectionStrings&gt;
+&nbsp; &nbsp; &lt;add name="OracleDbContext" providerName="Oracle.ManagedDataAccess.Client" connectionString="User Id=oracle_user;Password=oracle_user_password;Data Source=oracle"/&gt;
+&nbsp; &lt;/connectionStrings&gt;
+
+&lt;/configuration&gt;
+
+</pre>
+<br />
+4- update the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">connectionStrings </span>section with the correct db data and make use of&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">dataSources&nbsp;</span>in <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">oracle.manageddataaccess.client&nbsp;</span>section if you want.<br />
+<br />
+5- create your DbContext class and your tables classes like the bellow :<br />
+<br />
+<br />
+<pre class="prettyprint lang-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+
+namespace WindowsFormsApplication2
+{
+&nbsp; &nbsp; public class myDbContext : DbContext
+&nbsp; &nbsp; {
+&nbsp; &nbsp; &nbsp; &nbsp; public myDbContext()
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; : base("name=OracleDbContext") // connectionString name in App.config
+&nbsp; &nbsp; &nbsp; &nbsp; {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Database.SetInitializer&lt;myDbContext&gt;(null); // I already have the database , don't create or modify it :)
+&nbsp; &nbsp; &nbsp; &nbsp; }
+
+&nbsp; &nbsp; &nbsp; &nbsp; public virtual DbSet&lt;myDbTableName&gt; myDbTableNameSet { get; set; }
+&nbsp; &nbsp; }
+
+&nbsp; &nbsp; [Table("mySchema.myDbTableName")]
+&nbsp; &nbsp; public partial class myDbTableName
+&nbsp; &nbsp; {
+&nbsp; &nbsp; &nbsp; &nbsp; public myDbTableName()
+&nbsp; &nbsp; &nbsp; &nbsp; {
+&nbsp; &nbsp; &nbsp; &nbsp; }
+
+&nbsp; &nbsp; &nbsp; &nbsp; [Key]
+&nbsp; &nbsp; &nbsp; &nbsp; [DatabaseGenerated(DatabaseGeneratedOption.None)]
+&nbsp; &nbsp; &nbsp; &nbsp; public long ID { get; set; }
+
+&nbsp; &nbsp; &nbsp; &nbsp; [Required]
+&nbsp; &nbsp; &nbsp; &nbsp; [StringLength(32)]
+&nbsp; &nbsp; &nbsp; &nbsp; public string FirstName { get; set; }
+
+&nbsp; &nbsp; &nbsp; &nbsp; [Required]
+&nbsp; &nbsp; &nbsp; &nbsp; [StringLength(32)]
+&nbsp; &nbsp; &nbsp; &nbsp; public string LastName { get; set; }
+
+&nbsp; &nbsp; &nbsp; &nbsp; [StringLength(200)]
+&nbsp; &nbsp; &nbsp; &nbsp; public string Address { get; set; }
+
+&nbsp; &nbsp; &nbsp; &nbsp; public long? SampleData { get; set; }
+&nbsp; &nbsp; }
+}
+</pre>
+<br />
+<br />
+No we can start working just like this :<br />
+<br />
+<pre class="prettyprint lang-csharp">using(var myDB = new myDbContext())
+{
+&nbsp; &nbsp; this.Text = myDB.myDbTableNameSet.Count().ToString();
+}
+
+</pre>
+<br />
+Now to the interested part ;)<br />
+<br />
+what we miss here is the auto generating of&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">DbConext </span>and <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Tables Classes</span> from database which we can be done through visual studio by adding new <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Entity Data Model</span><br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://4.bp.blogspot.com/-_aKVo0Nfywo/WhvFOCT33YI/AAAAAAABPHc/MtnY9kUH09oda0mlif_GXWxfzW3HY_azgCLcBGAs/s1600/AddNewEnityModel.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="179" data-original-width="734" height="155" src="https://4.bp.blogspot.com/-_aKVo0Nfywo/WhvFOCT33YI/AAAAAAABPHc/MtnY9kUH09oda0mlif_GXWxfzW3HY_azgCLcBGAs/s640/AddNewEnityModel.png" width="640" /></a></div>
+<br />
+<br />
+Then Choose <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Code First from database</span> option<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://1.bp.blogspot.com/-OnF87lJBWgM/WhvFqEdw-2I/AAAAAAABPHg/VlLibCQFqhoK8XCGcuptCv0tnMRMYSjcACLcBGAs/s1600/Code-First-from-database.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="312" data-original-width="644" height="310" src="https://1.bp.blogspot.com/-OnF87lJBWgM/WhvFqEdw-2I/AAAAAAABPHg/VlLibCQFqhoK8XCGcuptCv0tnMRMYSjcACLcBGAs/s640/Code-First-from-database.png" width="640" /></a></div>
+<br />
+<br />
+Then choose your database connection or create a new one :<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://4.bp.blogspot.com/-ckvL5MYhY1g/WhvGGQ15PAI/AAAAAAABPHs/xB0ds3MvS6wCvkCIkp2ko3Y2tHq0fAJnwCLcBGAs/s1600/database-connection-info.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="554" data-original-width="660" height="537" src="https://4.bp.blogspot.com/-ckvL5MYhY1g/WhvGGQ15PAI/AAAAAAABPHs/xB0ds3MvS6wCvkCIkp2ko3Y2tHq0fAJnwCLcBGAs/s640/database-connection-info.png" width="640" /></a></div>
+<br />
+<br />
+Now if you hit&nbsp;&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Next&nbsp;</span>you may find the&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Enity Data Model Wizard&nbsp;</span>window Just&nbsp;<span style="color: #cc0000;"><b>Disappeared !!</b></span><b><span style="color: red;">&nbsp;</span></b>without any messages and you don't know the issue !! don't worry I'll tell you :)<br />
+<br />
+The issue is that we are using a version of <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Entity Framework</span> and <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Oreacle Managed Driver</span> which are newer that the ones intended to be used by the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Enity Data Model Wizard</span> because this wizard is trying to use the version installed with <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Oracle Developer Tools (ODT) for VS2013</span>.<br />
+<br />
+An easy fix for this issue is using the same <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Oracle Managed Driver</span>&nbsp;version which came with <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">ODT </span>while generating the classes and revert back to our latest version or better create a separate project for classes generation with this configuration.<br />
+<br />
+To do this just remove the [&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Oracle.ManagedDataAccess , Oracle.ManagedDataAccess.EntityFramework</span> ] DLLs from the project <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">References </span>and add them from [&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">C:\Program Files (x86)\Oracle Developer Tools for VS2013\odp.net\managed\common</span> ]<br />
+<br />
+If you rebuild your application and try the&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Enity Data Model Wizard&nbsp;</span>again you may face and error message like this :<br />
+<br />
+<pre>Your project references the latest version of Entity Framework; however, an Entity Framework
+database provider compatible with this version could not be found for your data connection. If you
+have already installed a compatible provider, ensure you have rebuild your project before performing
+this action. Otherwise, exist this wizard, install a compatible provider and rebuild your project before
+performing this action.
+</pre>
+<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://3.bp.blogspot.com/-NwtKDklFaPE/Whu6PbqrB3I/AAAAAAABPHM/GBz1qWb5IrIHTexj947OuLh4c9yfawTPgCLcBGAs/s1600/Untitled.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="565" data-original-width="631" height="571" src="https://3.bp.blogspot.com/-NwtKDklFaPE/Whu6PbqrB3I/AAAAAAABPHM/GBz1qWb5IrIHTexj947OuLh4c9yfawTPgCLcBGAs/s640/Untitled.png" width="640" /></a></div>
+<br />
+<br />
+This is because our <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">App.Config</span> file contains binding information related to the&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">nuget Oracle Managed Driver DLLs&nbsp;</span>version and there is a simple solution to this error :) we have just to remove this version specific data from <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">App.config</span> file and rebuild the application.<br />
+<br />
+The <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">App.config</span> should look like :<br />
+<br />
+<br />
+<pre class="prettyprint lang-xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;configuration&gt;
+&nbsp; &lt;configSections&gt;
+&nbsp; &nbsp; &lt;section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false"/&gt;
+&nbsp; &nbsp; &lt;section name="oracle.manageddataaccess.client" type="OracleInternal.Common.ODPMSectionHandler, Oracle.ManagedDataAccess"/&gt;
+&nbsp; &lt;/configSections&gt;
+
+&nbsp; &lt;startup&gt;
+&nbsp; &nbsp; &lt;supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.1"/&gt;
+&nbsp; &lt;/startup&gt;
+
+&nbsp; &lt;entityFramework&gt;
+&nbsp; &nbsp; &lt;defaultConnectionFactory type="System.Data.Entity.Infrastructure.SqlConnectionFactory, EntityFramework"/&gt;
+&nbsp; &nbsp; &lt;providers&gt;
+&nbsp; &nbsp; &nbsp; &lt;provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer"/&gt;
+&nbsp; &nbsp; &nbsp; &lt;provider invariantName="Oracle.ManagedDataAccess.Client" type="Oracle.ManagedDataAccess.EntityFramework.EFOracleProviderServices, Oracle.ManagedDataAccess.EntityFramework"/&gt;
+&nbsp; &nbsp; &lt;/providers&gt;
+&nbsp; &lt;/entityFramework&gt;
+
+&nbsp; &lt;system.data&gt;
+&nbsp; &nbsp; &lt;DbProviderFactories&gt;
+&nbsp; &nbsp; &nbsp; &lt;remove invariant="Oracle.ManagedDataAccess.Client"/&gt;
+&nbsp; &nbsp; &nbsp; &lt;add name="ODP.NET, Managed Driver" invariant="Oracle.ManagedDataAccess.Client" description="Oracle Data Provider for .NET, Managed Driver" type="Oracle.ManagedDataAccess.Client.OracleClientFactory, Oracle.ManagedDataAccess"/&gt;
+&nbsp; &nbsp; &lt;/DbProviderFactories&gt;
+&nbsp; &lt;/system.data&gt;
+
+&nbsp; &lt;oracle.manageddataaccess.client&gt;
+&nbsp; &nbsp; &lt;version number="*"&gt;
+&nbsp; &nbsp; &nbsp; &lt;dataSources&gt;
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;dataSource alias="SampleDataSource" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCL))) "/&gt;
+&nbsp; &nbsp; &nbsp; &lt;/dataSources&gt;
+&nbsp; &nbsp; &lt;/version&gt;
+&nbsp; &lt;/oracle.manageddataaccess.client&gt;
+
+&nbsp; &lt;connectionStrings&gt;
+&nbsp; &nbsp; &lt;add name="OracleDbContext" providerName="Oracle.ManagedDataAccess.Client" connectionString="User Id=oracle_user;Password=oracle_user_password;Data Source=oracle"/&gt;
+&nbsp; &lt;/connectionStrings&gt;
+
+&lt;/configuration&gt;
+</pre>
+<br />
+<br />
+Notice that I also removed <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">&lt;runtime&gt;</span> section and congratulations now you can see <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">Choose Your Database Objects and Settings</span>&nbsp; page , have fun and happy coding :)<br />
+<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://1.bp.blogspot.com/-UurU-t0CqBo/WhvQIxD1fKI/AAAAAAABPH8/0W9Yh3YbO1cjVAOL1ZhkWsim2HR7geGRwCLcBGAs/s1600/Choose-Database-Objects.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="565" data-original-width="631" height="572" src="https://1.bp.blogspot.com/-UurU-t0CqBo/WhvQIxD1fKI/AAAAAAABPH8/0W9Yh3YbO1cjVAOL1ZhkWsim2HR7geGRwCLcBGAs/s640/Choose-Database-Objects.png" width="640" /></a></div>
+<br /></div>

@@ -1,0 +1,38 @@
+---
+layout: post
+title: Connecting to Oracle DB from Windows 10 using Oracle Managed Driver .NET
+date: '2019-06-12T03:04:00.002-03:00'
+author: Mohammed Fayed
+tags:
+- Oracle
+- C#
+- DB
+modified_time: '2019-06-12T03:04:52.251-03:00'
+blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-9066043889771338412
+blogger_orig_url: https://www.fayed.org/2019/06/connecting-to-oracle-db-from-windows-10.html
+---
+
+<div dir="ltr" style="text-align: left;" trbidi="on">
+In windows 10 the FIPS ( Federal Information Processing Standards ) policy is enabled by default which means that windows will drop the password part from the database connection string which will give you an error like:<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; margin-left: 0in; margin-right: 0in;">
+<br /></div>
+<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; line-height: 14pt; margin: 3.75pt;">
+<span style="color: black; font-family: Consolas;">System.Data.Entity.Core.<wbr></wbr>ProviderIncompatibleException:&nbsp;<b>An error occurred accessing the database</b>. This usually means that the connection to the database failed. Check that the connection string is correct and that the appropriate DbContext constructor is being used to specify it or find it in the application's config file. See<a data-saferedirecturl="https://www.google.com/url?q=http://go.microsoft.com/fwlink/?LinkId%3D386386&amp;source=gmail&amp;ust=1560405698816000&amp;usg=AFQjCNGsz3bh2CIevUt6efmLIlpPW5xpMQ" href="http://go.microsoft.com/fwlink/?LinkId=386386" style="color: #1155cc;" target="_blank">http://go.microsoft.com/<wbr></wbr>fwlink/?LinkId=386386</a>&nbsp;for information on DbContext and connections. See the inner exception for details of the failure.<u></u><u></u></span></div>
+<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; line-height: 14pt; margin: 3.75pt;">
+<br /></div>
+<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; line-height: 14pt; margin: 3.75pt;">
+<span style="color: black; font-family: Consolas;">---&gt; System.Data.Entity.Core.<wbr></wbr>ProviderIncompatibleException:&nbsp;<b>The provider did not return a ProviderManifestToken string.</b><u></u><u></u></span></div>
+<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; line-height: 14pt; margin: 3.75pt;">
+<span style="color: black; font-family: Consolas;"><br /></span></div>
+<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; line-height: 14pt; margin: 3.75pt;">
+<span style="color: black; font-family: Consolas;">---&gt; Oracle.ManagedDataAccess.<wbr></wbr>Client.OracleException:&nbsp;<b>ORA-01017: invalid username/password; logon denied<u></u><u></u></b></span></div>
+<div class="MsoNormal" style="background-color: white; color: #222222; font-family: &quot;Times New Roman&quot;, serif; font-size: 12pt; line-height: 14pt; margin: 3.75pt;">
+<br /></div>
+To solve this issue we have to disable the FIPS security policy by setting this key in windows registry:<br /><br />[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\FipsAlgorithmPolicy]  to zero<div>
+<br /></div>
+<div>
+<br /></div>
+<div>
+source:&nbsp;<a href="https://stackoverflow.com/a/26682149/1312036">https://stackoverflow.com/a/26682149/1312036</a></div>
+<div>
+<br /></div>
+</div>

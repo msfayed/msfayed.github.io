@@ -1,0 +1,278 @@
+---
+layout: post
+title: From SVN to GIT
+date: '2018-10-14T08:13:00.001-03:00'
+author: Mohammed Fayed
+tags:
+- Bash
+- GIT
+- SSH
+- svn
+modified_time: '2020-04-28T10:04:16.244-03:00'
+blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-8186719725264084597
+blogger_orig_url: https://www.fayed.org/2018/10/from-svn-to-git.html
+---
+
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<b>First of all, we need to generate SSH keys for our machine:</b><br />
+<b><br /></b>
+<b>Generate new SSH keys :</b><br />
+<b><br /></b>
+'~' refers to your "home directory".<br />
+In Windows, you can find this by opening a command shell (cmd) and typing :<br />
+<br />
+<pre> echo %USERPROFILE%
+</pre>
+<br />
+Before continuing, check your <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">~/.ssh</span> folder (for example, <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">/home/jamal/.ssh</span> or <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">C:\Users\jamal\.ssh</span>) and look for the following files (existing SSH keys):<br />
+<div>
+<ul style="text-align: left;">
+<li>id_rsa&nbsp;</li>
+<li>id_rsa.pub&nbsp;</li>
+</ul>
+if they are not exist, lets create new keys:<br />
+<br />
+<pre>$ ssh-keygen -C "mohammed@fayed.org"
+</pre>
+<br />
+To remove the passphrase for the SSH key without having to create a new key (<span style="color: red;">NOT recommended</span>) :
+<br />
+<br />
+<pre> $ ssh-keygen -p
+</pre>
+<br />
+This will then prompt you to enter the keyfile location, the old passphrase, and the new passphrase (which can be left blank to have no passphrase).
+
+If you would like to do it all on one line without prompts do :
+
+<br />
+<br />
+<pre> $ ssh-keygen -p [-P old_passphrase] [-N new_passphrase] [-f keyfile]
+</pre>
+<br />
+-----------------<br />
+<br />
+Make sure to change&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">TortoiseGit </span>SSH client to use Git SSH :</div>
+<div>
+<br />
+<div>
+<pre>Right Click : TortoiseGit -&gt; settings-&gt; network -&gt; SSH Client , set the value to : C:\Program Files\Git\usr\bin\ssh.exe&nbsp;</pre>
+<br />
+-----------------<br />
+<br />
+<b>Using Git Bash and to save the password for your SSH private key: </b></div>
+<div>
+<br />
+Create ~/.bashrc , to create the bashrc file in windows: (ignore the error)</div>
+<div>
+<br /></div>
+<pre>   copy &gt; ~/.bashrc
+</pre>
+<div>
+<br /></div>
+<div>
+Add the following lines to it :<br />
+<br />
+<pre>   eval $(ssh-agent)
+   ssh-add
+</pre>
+<br />
+----------------- <br />
+<br />
+<b>Convert SVN repository to GIT :&nbsp;</b><br />
+<br />
+Create a users file (i.e. users.txt) for mapping SVN users to Git it will be something like:
+
+
+<br />
+<br />
+<pre> user1 = First Last Name <email address.com="">
+ user2 = First Last Name <email address.com="">
+ ...
+</email></email></pre>
+<br />
+You can use this one-liner to build a template from your existing SVN repository (run it in Git Bash):
+
+<br />
+<br />
+<pre> svn log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" &lt;"$2"&gt;"}' | sort -u &gt; users.txt
+</pre>
+<br />
+Now pull the SVN data from the repository:
+
+<br />
+<br />
+<pre> git svn clone --stdlayout --no-metadata --authors-file=users.txt svn://hostname/path dest_dir-tmp 
+</pre>
+<br />
+This command will create a new Git repository in <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">dest_dir-tmp</span> and start pulling the SVN repository. Note that the "<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">--stdlayout</span>" flag implies you have the common "<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">trunk/, branches/, tags/</span>" SVN layout.<br />
+<br />
+If your layout differs, become familiar with <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">--tags, --branches, --trunk</span> options (in general git svn help).<br />
+<br />
+All common protocols are allowed: svn://, http://, https://. The URL should target the base repository, something like <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">http://svn.mycompany.com/myrepo/repository</span>.<br />
+<br />
+That must <b>not</b> include <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">/trunk, /tag or /branches</span>.<br />
+<br />
+Note that after executing this command it very often looks like the operation is "hanging/freezed", and it's quite normal that it can be stuck for a long time after initializing the new repository. Eventually you will then see log messages which indicates that it's migrating.<br />
+<br />
+Also note that if you omit the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">--no-metadata</span> flag, Git will append information about the corresponding SVN revision to the commit message (i.e. <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">git-svn-id: svn://svn.mycompany.com/myrepo/</span><branchname trunk=""><span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">@</span><revisionnumber> <repository uuid="">)
+
+If a user name is not found, update your <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">users.txt&nbsp;</span>file then:
+
+</repository></revisionnumber></branchname><br />
+<branchname trunk=""><revisionnumber><repository uuid=""><br /></repository></revisionnumber></branchname>
+<br />
+<pre> cd dest_dir-tmp
+ git svn fetch
+</pre>
+<div>
+<br /></div>
+You might have to repeat that last command several times, if you have a large project, until all of the Subversion commits have been fetched:</div>
+<div>
+&nbsp;
+
+<br />
+<pre> git svn fetch
+</pre>
+<div>
+<br /></div>
+When completed, Git will checkout the SVN trunk into a new branch. Any other branches are setup as remotes. You can view the other SVN branches with:</div>
+<div>
+&nbsp;
+
+<br />
+<pre> git branch -r
+</pre>
+<div>
+<br /></div>
+If you want to keep other remote branches in your repository, you want to create a local branch for each one manually. (Skip trunk/master.) If you don't do this, the branches won't get cloned in the final step.</div>
+<div>
+&nbsp;
+
+<br />
+<pre> git checkout -b local_branch remote_branch
+</pre>
+<div>
+<br /></div>
+# It's OK if local_branch and remote_branch are the same name.<br />
+<br />
+Tags are imported as branches. You have to create a local branch, make a tag and delete the branch to have them as tags in Git. To do it with tag "v1":</div>
+<div>
+&nbsp;
+
+<br />
+<pre> git checkout -b tag_v1 remotes/tags/v1
+ git checkout master
+ git tag v1 tag_v1
+ git branch -D tag_v1
+</pre>
+<div>
+<br /></div>
+Clone your GIT-SVN repository into a clean Git repository:</div>
+<div>
+&nbsp;
+
+<br />
+<pre> git clone dest_dir-tmp dest_dir
+ rm -rf dest_dir-tmp
+ cd dest_dir
+</pre>
+<div>
+<br /></div>
+The local branches that you created earlier from remote branches will only have been copied as remote branches into the new cloned repository. (Skip trunk/master.) For each branch you want to keep:</div>
+<div>
+&nbsp;
+
+<br />
+<pre> git checkout -b local_branch origin/remote_branch
+</pre>
+<div>
+<br /></div>
+Finally, remove the remote from your clean Git repository that points to the now deleted temporary repository:</div>
+<div>
+<pre> git remote rm origin
+</pre>
+</div>
+<div>
+<br /></div>
+-----------------<br />
+<b>To Clone into a BARE Git Repo</b><br />
+<br />
+<pre> 
+$ git svn init https://path/to/you/svn repo-git --stdlayout 
+
+#edit  repo-git/.git/config to contain:
+[svn-remote "svn"]
+        url = https://path/to/you/sv
+        fetch = trunk:refs/heads/master
+        branches = branches/*:refs/heads/*
+        tags = tags/*:refs/tags/*
+
+# also make sure that [ bare = true ]
+
+$ cd repo-git
+$ git svn fetch
+
+</pre>
+<br />
+-----------------<br />
+<br />
+<b>Set up an editor to work with GIT on Windows</b><br />
+<br />
+By executing<br />
+<br />
+<pre> $ git config core.editor notepad
+</pre>
+<br />
+users can now use notepad.exe as their default editor.<br />
+<br />
+or to use Notepadd++ you can create .sh script file with this content<br />
+<br />
+<pre> 
+#!/bin/sh
+"c:/Program Files/Notepad++/notepad++.exe" -multiInst -notabbar -nosession -noPlugin "$*"
+</pre>
+<br /></div>
+<div>
+and execute<br />
+<pre> 
+$ git config --global core.editor C:/npp.sh
+</pre>
+<br />
+to test that your editor is working<br />
+<pre> 
+$ git config -e
+</pre>
+<br />
+<b><br /></b>
+<b>Convert Local Git Repo to&nbsp;shallow</b><br />
+<pre>$ git fetch --depth 10
+
+Or
+
+$ git pull --depth 1
+$ git gc --prune=all
+
+Or [ good trick for old git versions ]
+
+$ git clone --mirror --depth=5  file://$PWD ../temp
+$ rm -rf .git/objects
+$ mv ../temp/{shallow,objects} .git
+$ rm -rf ../temp
+
+</pre>
+<b>Clean Git Repo</b><br />
+<pre> 
+$ git reflog expire --all --expire=now
+$ git gc --prune=now --aggressive
+</pre>
+<br />
+<br />
+Sources :<br />
+<a href="https://docs.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate?view=vsts">Azure DevOps Services : Use SSH key authentication</a><br />
+<a href="https://stackoverflow.com/a/3972103">https://stackoverflow.com/a/3972103</a><br />
+<a href="https://stackoverflow.com/questions/10564/how-can-i-set-up-an-editor-to-work-with-git-on-windows">https://stackoverflow.com/questions/10564/how-can-i-set-up-an-editor-to-work-with-git-on-windows</a><br />
+<a href="https://stackoverflow.com/questions/38171899/how-to-reduce-the-depth-of-an-existing-git-clone">https://stackoverflow.com/questions/38171899/how-to-reduce-the-depth-of-an-existing-git-clone</a><br />
+<a href="https://stackoverflow.com/questions/12544318/why-git-svn-cannot-clone-a-bare-repo">https://stackoverflow.com/questions/12544318/why-git-svn-cannot-clone-a-bare-repo</a><br />
+<br /></div>
+</div>

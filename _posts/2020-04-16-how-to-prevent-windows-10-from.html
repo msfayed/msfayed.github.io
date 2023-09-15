@@ -1,0 +1,27 @@
+---
+layout: post
+title: Windows 10 disable automatically adding keyboard layouts
+date: '2020-04-16T09:05:00.003-03:00'
+author: Mohammed Fayed
+tags:
+modified_time: '2020-09-24T16:07:42.185-03:00'
+blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-8110984644406192510
+blogger_orig_url: https://www.fayed.org/2020/04/how-to-prevent-windows-10-from.html
+---
+
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<div style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;">&nbsp;I have created a RemovePreload.reg text file with the following content, this way this fix can easily be re-applied every time without navigating the registry:</span></span></div>
+<div style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;"><br /></span></span></div>
+<blockquote class="tr_bq" style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;">Windows Registry Editor Version 5.00</span></span><span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;"><br /></span></span><span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;">[-HKEY_USERS\.DEFAULT\Keyboard Layout\Preload]</span></span></blockquote>
+<div style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;">To use this, save it in a text file and change the extension from .txt to .reg. Then whenever it comes back, you can just double click it and restart or sign out.</span></span></div>
+<div style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;"><br /></span></span></div>
+<div style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;"><br /></span></span></div>
+<div style="background-color: white; border: 0px; box-sizing: inherit; clear: both; font-stretch: inherit; font-variant-east-asian: inherit; font-variant-numeric: inherit; line-height: inherit; margin-bottom: 1em; padding: 0px; vertical-align: baseline;">
+<span style="color: #242729; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;"><span style="font-size: 15px;">source:&nbsp;</span></span><a href="https://superuser.com/questions/1092246/how-to-prevent-windows-10-from-automatically-adding-keyboard-layouts-i-e-us-ke#1094953" style="background-color: transparent;">https://superuser.com/questions/1092246/how-to-prevent-windows-10-from-automatically-adding-keyboard-layouts-i-e-us-ke#1094953</a></div>
+</div>

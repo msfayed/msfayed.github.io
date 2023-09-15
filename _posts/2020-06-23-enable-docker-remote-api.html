@@ -1,0 +1,25 @@
+---
+layout: post
+title: Enable Docker Remote API
+date: '2020-06-23T03:46:00.000-03:00'
+author: Mohammed Fayed
+tags:
+modified_time: '2020-06-23T03:46:36.903-03:00'
+blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-1347511242304256982
+blogger_orig_url: https://www.fayed.org/2020/06/enable-docker-remote-api.html
+---
+
+<div dir="ltr" style="text-align: left;" trbidi="on">
+<br />
+<ol class="" style="background-color: white; box-sizing: inherit; color: rgba(0, 0, 0, 0.8); font-family: medium-content-sans-serif-font, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, Cantarell, &quot;Open Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; list-style: none none; margin: 0px; padding: 0px;">
+<li class="fp fq ap cd fr b fs ft fu fv fw fx fy fz ga gb gc gd ge gf gg gh gi gj gk" data-selectable-paragraph="" id="f018" style="box-sizing: inherit; color: #292929; font-family: medium-content-serif-font, Georgia, Cambria, &quot;Times New Roman&quot;, Times, serif; font-size: 21px; letter-spacing: -0.003em; line-height: 32px; list-style-type: decimal; margin-bottom: -0.46em; margin-left: 30px; margin-top: 2em; padding-left: 0px;">Navigate to /lib/systemd/system in your terminal and open docker.service file<br style="box-sizing: inherit;" />vi /lib/systemd/system/docker.service</li>
+<li class="fp fq ap cd fr b fs gl fu fv gm fx fy gn ga gb go gd ge gp gg gh gi gj gk" data-selectable-paragraph="" id="0f93" style="box-sizing: inherit; color: #292929; font-family: medium-content-serif-font, Georgia, Cambria, &quot;Times New Roman&quot;, Times, serif; font-size: 21px; letter-spacing: -0.003em; line-height: 32px; list-style-type: decimal; margin-bottom: -0.46em; margin-left: 30px; margin-top: 1.05em; padding-left: 0px;">Find the line which starts with ExecStart and adds -H=tcp://0.0.0.0:2375 to make it look like<br style="box-sizing: inherit;" />ExecStart=/usr/bin/dockerd -H=fd:// -H=tcp://0.0.0.0:2375</li>
+<li class="fp fq ap cd fr b fs gl fu fv gm fx fy gn ga gb go gd ge gp gg gh gi gj gk" data-selectable-paragraph="" id="946e" style="box-sizing: inherit; color: #292929; font-family: medium-content-serif-font, Georgia, Cambria, &quot;Times New Roman&quot;, Times, serif; font-size: 21px; letter-spacing: -0.003em; line-height: 32px; list-style-type: decimal; margin-bottom: -0.46em; margin-left: 30px; margin-top: 1.05em; padding-left: 0px;">Save the Modified File</li>
+<li class="fp fq ap cd fr b fs gl fu fv gm fx fy gn ga gb go gd ge gp gg gh gi gj gk" data-selectable-paragraph="" id="c774" style="box-sizing: inherit; color: #292929; font-family: medium-content-serif-font, Georgia, Cambria, &quot;Times New Roman&quot;, Times, serif; font-size: 21px; letter-spacing: -0.003em; line-height: 32px; list-style-type: decimal; margin-bottom: -0.46em; margin-left: 30px; margin-top: 1.05em; padding-left: 0px;">Reload the docker daemon<br style="box-sizing: inherit;" />systemctl daemon-reload</li>
+<li class="fp fq ap cd fr b fs gl fu fv gm fx fy gn ga gb go gd ge gp gg gh gi gj gk" data-selectable-paragraph="" id="3fb7" style="box-sizing: inherit; color: #292929; font-family: medium-content-serif-font, Georgia, Cambria, &quot;Times New Roman&quot;, Times, serif; font-size: 21px; letter-spacing: -0.003em; line-height: 32px; list-style-type: decimal; margin-bottom: -0.46em; margin-left: 30px; margin-top: 1.05em; padding-left: 0px;">Restart the container<br style="box-sizing: inherit;" />sudo service docker restart</li>
+</ol>
+<div>
+<span style="color: #292929;"><span style="font-size: 21px; letter-spacing: -0.063px;"><br /></span></span></div>
+<div>
+<br /></div>
+source: <a href="https://medium.com/@ssmak/how-to-enable-docker-remote-api-on-docker-host-7b73bd3278c6">https://medium.com/@ssmak/how-to-enable-docker-remote-api-on-docker-host-7b73bd3278c6</a></div>
