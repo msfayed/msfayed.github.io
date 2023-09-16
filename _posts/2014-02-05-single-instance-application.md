@@ -10,9 +10,10 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-78237025292653352
 blogger_orig_url: https://www.fayed.org/2014/02/single-instance-application.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-<br /><br />sometimes you want to allow the user to run only one instance of your application , so you will need to check if your application is already running at the start up by using the following method which will return null if there is no previous instance is already running otherwise it will return a <span style="color: blue; font-family: Courier New, Courier, monospace;">Process </span>object pointing to that instance   ... enjoy<br /><br />
-<pre class="prettyprint lang-cs">
+
+sometimes you want to allow the user to run only one instance of your application , so you will need to check if your application is already running at the start up by using the following method which will return null if there is no previous instance is already running otherwise it will return a `Process` object pointing to that instance   ... enjoy 
+
+```csharp
 
 public static Process PriorProcess()
 {
@@ -28,5 +29,4 @@ public static Process PriorProcess()
     return null;
 }
 
-</pre>
-</div>
+```

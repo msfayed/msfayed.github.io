@@ -11,17 +11,20 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-87786408403762972
 blogger_orig_url: https://www.fayed.org/2014/03/convert-text-to-code-put-it-in-string.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-covert a text block to code ( text stored in a variable ) with an option to produce C# or VB.NET code using <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">String&nbsp;</span>or&nbsp;<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">StringBuilder </span>.<br />
-<br />
-<b>Usage :</b>  When you want to display a large text message or send an email with specific template you will need to format your text in a text editor like notepad or what ever you use but when you start to copy this text to your code editor to deal with you will need this utility<br />
-<br />
-<b>The Code :</b><br />
-<br />
-create as GUI like the bellow<br /><br /><div style="text-align: center;">
-<a href="http://1.bp.blogspot.com/-DGQRGGT2dTE/VzPRhyTA1pI/AAAAAAAAAFY/bYR9Jxc47w0VcIIQqgWtXh1IjgSaSTingCK4B/s1600/img1.png"><img border="0" src="https://1.bp.blogspot.com/-DGQRGGT2dTE/VzPRhyTA1pI/AAAAAAAAAFY/bYR9Jxc47w0VcIIQqgWtXh1IjgSaSTingCK4B/s640/img1.png" /></a></div>
-<br /><br />Then add the following code to the input text ( TextChanged ) Event<br />
-<pre class="prettyprint">if (this.cmbLanguage.SelectedIndex == 1)
+covert a text block to code ( text stored in a variable ) with an option to produce C# or VB.NET code using `String` or  `StringBuilder`
+
+**Usage :**  When you want to display a large text message or send an email with specific template you will need to format your text in a text editor like notepad or what ever you use but when you start to copy this text to your code editor to deal with you will need this utility
+
+**The Code :**
+
+create as GUI like the bellow
+
+[![](https://1.bp.blogspot.com/-DGQRGGT2dTE/VzPRhyTA1pI/AAAAAAAAAFY/bYR9Jxc47w0VcIIQqgWtXh1IjgSaSTingCK4B/s640/img1.png)](http://1.bp.blogspot.com/-DGQRGGT2dTE/VzPRhyTA1pI/AAAAAAAAAFY/bYR9Jxc47w0VcIIQqgWtXh1IjgSaSTingCK4B/s1600/img1.png)
+
+Then add the following code to the input text ( TextChanged ) Event
+
+```csharp
+if (this.cmbLanguage.SelectedIndex == 1)
 {
  txtTextToCodeResult.Text= this.convertToVBCode(txtTextToCodeInput.Lines, this.chkUseStringBuilder.Checked,this.chkAddLineBreak.Checked);
 }
@@ -29,11 +32,12 @@ else
 {
  txtTextToCodeResult.Text= this.convertToCSharpCode(txtTextToCodeInput.Lines, this.chkUseStringBuilder.Checked,this.chkAddLineBreak.Checked);
 }
-</pre>
-<br />
-Then add the following methods to your form :<br />
-<br />
-<pre class="prettyprint">private string convertToCSharpCode(string[] lines, bool useStringBuilder, bool addNewLineSymbole)
+```
+
+Then add the following methods to your form :
+
+```csharp
+private string convertToCSharpCode(string[] lines, bool useStringBuilder, bool addNewLineSymbole)
 {
     StringBuilder output = new StringBuilder(0x400);
     if (useStringBuilder)
@@ -77,6 +81,4 @@ private string convertToVBCode(string[] lines, bool useStringBuilder, bool addNe
     return output.ToString();
 }
 
-
-</pre>
-</div>
+```

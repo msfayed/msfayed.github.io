@@ -12,7 +12,7 @@ blogger_orig_url: https://www.fayed.org/2013/06/general-windows-application-exce
 
 when you use C# to build Windows Forms Application you come to a point when you need a general Exception handing for both you UI and any thread in the application ... its easy just add the following to your Main method in the Program class
 
-```
+```csharp
 // Add the event handler for handling UI thread exceptions to the event.
 Application.ThreadException += new ThreadExceptionEventHandler(UIThreadException);
  
@@ -25,9 +25,9 @@ AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler
 
 ```
 
-and make sure you add the following methods to the Program Class<br />
+and make sure you add the following methods to the Program Class
 
-```
+```csharp
 private static void UIThreadException(object sender, ThreadExceptionEventArgs t)
 {
     // Handel your Exception here

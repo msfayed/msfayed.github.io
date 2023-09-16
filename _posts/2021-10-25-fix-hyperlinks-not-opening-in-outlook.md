@@ -30,12 +30,9 @@ Your organization's policies are preventing us from completing this action for y
   
 This can be fixed by creating .reg file (modify it to your installed browser)  
   
-  
-  
-
 Windows Registry Editor Version 5.00 
 
-```
+```shell
 [HKEY_LOCAL_MACHINE\SOFTWARE\Classes\htmlfile\shell\open]
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Classes\htmlfile\shell\open\command]

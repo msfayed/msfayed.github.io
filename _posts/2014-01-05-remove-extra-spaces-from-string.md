@@ -13,7 +13,7 @@ blogger_orig_url: https://www.fayed.org/2014/01/remove-extra-spaces-from-string.
 
 Use the following extension method to remove the extra spaces ( in the middle ) from a desired string , its easy right :)
 
-```
+```csharp
 public static string RemoveWhiteSpace(this string mStr)
 {
     string mRet = mStr.Trim().Replace("  ", " ");

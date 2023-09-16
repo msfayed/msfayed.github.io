@@ -10,10 +10,11 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-32528385324691104
 blogger_orig_url: https://www.fayed.org/2014/02/convert-datagridview-to-html-table.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-Whenever you want to convert the data in <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">DataGridView </span>you can use the following method , the process is very easy , put this method in any common class in your application an call it , it will return a string contain the HTML Table.<br />
-<br />
-<pre class="prettyprint lang-cs">
+
+Whenever you want to convert the data in `DataGridView` you can use the following method , the process is very easy , put this method in any common class in your application an call it , it will return a string contain the HTML Table.
+
+
+```csharp
 
 public static string ConvertToHtmlTable(DataGridView targetTable)
 {
@@ -80,5 +81,4 @@ public static string ConvertToHtmlTable(DataGridView targetTable)
     return myHtmlFile;
 }
 
-</pre>
-</div>
+```
