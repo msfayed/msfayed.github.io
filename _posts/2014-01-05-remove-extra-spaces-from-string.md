@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: Remove Extra Spaces From A String
 date: '2014-01-05T08:27:00.000-04:00'
 author: Mohammed Fayed
@@ -10,10 +10,11 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-38755346420157637
 blogger_orig_url: https://www.fayed.org/2014/01/remove-extra-spaces-from-string.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-Use the following extension method to remove the extra spaces ( in the middle ) from a desired string , its easy right :)<br />
-<br />
-<pre class="prettyprint lang-cs">public static string RemoveWhiteSpace(this string mStr)
+
+Use the following extension method to remove the extra spaces ( in the middle ) from a desired string , its easy right :)
+
+```
+public static string RemoveWhiteSpace(this string mStr)
 {
     string mRet = mStr.Trim().Replace("  ", " ");
     while (mRet.Contains("  "))
@@ -22,5 +23,4 @@ Use the following extension method to remove the extra spaces ( in the middle ) 
     return mRet.Trim();
 }
 
-</pre>
-</div>
+```

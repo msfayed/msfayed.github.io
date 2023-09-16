@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: Simple & Solid Reporting in .NET using ABCpdf.NET
 date: '2012-10-03T23:22:00.000-03:00'
 author: Mohammed Fayed

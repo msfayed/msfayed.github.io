@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: Convert Image to Byte Array
 date: '2013-05-09T19:30:00.000-03:00'
 author: Mohammed Fayed
@@ -10,10 +10,11 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-80655672228737452
 blogger_orig_url: https://www.fayed.org/2013/05/convert-image-to-byte-array.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-As the subject says ... if you want to convert an Image to an array of bytes to save it in the database or in a file or send it to a web service or another application , just put the following extension method in a static class and call it from the Image object like :<br />
-<br />
-<pre class="prettyprint lang-cs">byte[] mImageBytes = img.ToBytes(ImageFormat.Png);
+As the subject says ... if you want to convert an Image to an array of bytes to save it in the database or in a file or send it to a web service or another application , just put the following extension method in a static class and call it from the Image object like :  
+  
+
+```cs
+byte[] mImageBytes = img.ToBytes(ImageFormat.Png);
 
 public static byte[] ToBytes(this Image image, ImageFormat format)
 {
@@ -28,7 +29,4 @@ public static byte[] ToBytes(this Image image, ImageFormat format)
        return stream.ToArray();
     }
 }
-
-</pre>
-<br />
-</div>
+```

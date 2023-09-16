@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: Installing and configuring Opinio Survey
 date: '2012-05-20T21:53:00.000-03:00'
 author: Mohammed Fayed

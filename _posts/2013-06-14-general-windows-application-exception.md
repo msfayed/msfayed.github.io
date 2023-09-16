@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: General Windows Application Exception Handling in C#
 date: '2013-06-14T21:16:00.000-03:00'
 author: Mohammed Fayed
@@ -10,10 +10,10 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-77889811141530764
 blogger_orig_url: https://www.fayed.org/2013/06/general-windows-application-exception.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-when you use C# to build Windows Forms Application you come to a point when you need a general Exception handing for both you UI and any thread in the application ... its easy just add the following to your Main method in the Program class<br />
-<br />
-<pre class="prettyprint lang-cs">// Add the event handler for handling UI thread exceptions to the event.
+when you use C# to build Windows Forms Application you come to a point when you need a general Exception handing for both you UI and any thread in the application ... its easy just add the following to your Main method in the Program class
+
+```
+// Add the event handler for handling UI thread exceptions to the event.
 Application.ThreadException += new ThreadExceptionEventHandler(UIThreadException);
  
 // Set the unhandled exception mode to force all Windows Forms errors to go through
@@ -23,11 +23,12 @@ Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 // Add the event handler for handling non-UI thread exceptions to the event.
 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledException);
 
-</pre>
-<br />
+```
+
 and make sure you add the following methods to the Program Class<br />
-<br />
-<pre class="prettyprint lang-cs">private static void UIThreadException(object sender, ThreadExceptionEventArgs t)
+
+```
+private static void UIThreadException(object sender, ThreadExceptionEventArgs t)
 {
     // Handel your Exception here
     MessageBox.Show(t.Exception.Message, "error");
@@ -40,5 +41,5 @@ private static void UnhandledException(object sender, UnhandledExceptionEventArg
     MessageBox.Show(ex.Message, "error");
 }
 
-</pre>
-</div>
+```
+

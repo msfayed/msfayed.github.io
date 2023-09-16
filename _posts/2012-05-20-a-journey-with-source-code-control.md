@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: A Journey With Source Code Control , Visual Studio + SVN
 date: '2012-05-20T10:59:00.000-03:00'
 author: Mohammed Fayed
