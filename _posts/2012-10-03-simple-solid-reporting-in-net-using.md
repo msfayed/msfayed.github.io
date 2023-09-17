@@ -24,7 +24,7 @@ here I am going to explain the first steps to get started with [ABCpdf.NET](http
 - add webBrowser control to show the report and a button to save it in PDF file format like this image  
   
 
-[![](https://1.bp.blogspot.com/-oQtfgp1SS_M/VzOxRRGtnlI/AAAAAAAAAEI/CbAUJnzNvqQRzzwBdS8whzYFaUdbMhBIgCLcB/s1600/img1.png)](https://1.bp.blogspot.com/-oQtfgp1SS_M/VzOxRRGtnlI/AAAAAAAAAEI/CbAUJnzNvqQRzzwBdS8whzYFaUdbMhBIgCLcB/s1600/img1.png)
+    [![](https://1.bp.blogspot.com/-oQtfgp1SS_M/VzOxRRGtnlI/AAAAAAAAAEI/CbAUJnzNvqQRzzwBdS8whzYFaUdbMhBIgCLcB/s1600/img1.png)](https://1.bp.blogspot.com/-oQtfgp1SS_M/VzOxRRGtnlI/AAAAAAAAAEI/CbAUJnzNvqQRzzwBdS8whzYFaUdbMhBIgCLcB/s1600/img1.png)
 
   
 - add HTML page to your project and put the following HTML in it :  
@@ -37,7 +37,7 @@ here I am going to explain the first steps to get started with [ABCpdf.NET](http
     </head> 
     <body> 
         <p> 
-            Fayecom Company 
+            Fayedcom Company 
             <br /> 
             Simple Report 
             Test</p> 
@@ -80,9 +80,9 @@ here I am going to explain the first steps to get started with [ABCpdf.NET](http
     string mFileName = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath) ,"HTMLPage1.htm");
     string mHTML = File.ReadAllText(mFileName); 
 
-    mHTML = mHTML.Replace("\[name\]","Mohammed Samir Fayed"); 
-    mHTML = mHTML.Replace("\[mobile\]","1234567890"); 
-    mHTML = mHTML.Replace("\[address\]","My Address :)");
+    mHTML = mHTML.Replace("[name]","Mohammed Fayed"); 
+    mHTML = mHTML.Replace("[mobile]","1234567890"); 
+    mHTML = mHTML.Replace("[address]","My Address :)");
 
     webBrowser1.DocumentText = mHTML;
     ```
@@ -113,8 +113,8 @@ here I am going to explain the first steps to get started with [ABCpdf.NET](http
     System.Diagnostics.Process.Start(mPdfFileName);
     ```
   
+
 this will export your report to PDF and run it the default PDF viewer like this  
-  
-  
+ 
 
 [![](https://2.bp.blogspot.com/-oKw4zr_r1xc/VzOx1O80WSI/AAAAAAAAAEk/4gw3H1G8HWgbMsO2lBPCryZr1OGz-m9tQCK4B/s640/img4.png)](http://2.bp.blogspot.com/-oKw4zr_r1xc/VzOx1O80WSI/AAAAAAAAAEk/4gw3H1G8HWgbMsO2lBPCryZr1OGz-m9tQCK4B/s1600/img4.png)
