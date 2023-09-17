@@ -37,7 +37,7 @@ StringBuilder myStr = new StringBuilder();
 int mCount = 0;
 for (int ii = mMin; ii <= mMax; ii++)
 {
-    if (myData.Contains<int>(ii) == false)
+    if (myData.Contains(ii) == false)
     {
         myStr.Append(ii.ToString() + Environment.NewLine);
         mCount++;
@@ -46,7 +46,6 @@ for (int ii = mMin; ii <= mMax; ii++)
 
 txtResult.Text = myStr.ToString();
 lblCount.Text = "Total Numbers Found : " + mCount.ToString();
-
 ```
 
 and add the following method to the same class
@@ -54,23 +53,22 @@ and add the following method to the same class
 ```csharp
 private int[] StringToInts(string myString)
 {
-    List<int> ints = new List<int>();
-    string[] strings;
+  List ints = new List();
+  string[] strings;
 
-    if (myString.Contains(","))
-  strings = myString.Split(',');
-    else
-  strings = myString.Split(Environment.NewLine.ToCharArray());
+  if (myString.Contains(","))
+    strings = myString.Split(',');
+  else
+    strings = myString.Split(Environment.NewLine.ToCharArray());
 
-    foreach (string s in strings)
-    {
-  int i;
-  if (int.TryParse(s.Trim(), out i))
+  foreach (string s in strings)
   {
-   ints.Add(i);
-  }
+    int i;
+    if (int.TryParse(s.Trim(), out i))
+    {
+      ints.Add(i);
     }
+  }
     return ints.ToArray();
- }
-
+}
 ```

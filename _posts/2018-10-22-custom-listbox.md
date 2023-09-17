@@ -89,6 +89,7 @@ public class GList : FlowLayoutPanel
 ```
 
 
-Source : [https://www.codeproject.com/Articles/333864/Flexible-List-Control](https://www.codeproject.com/Articles/333864/Flexible-List-Control)
+#### source: 
+- [https://www.codeproject.com/Articles/333864/Flexible-List-Control](https://www.codeproject.com/Articles/333864/Flexible-List-Control)
 
 

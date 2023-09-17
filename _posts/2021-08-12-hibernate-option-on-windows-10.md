@@ -19,5 +19,5 @@ Then from control panel `C:\Windows\System32\control.exe`
 
 choose `power options` -> `Choose what power buttons` --> `Change settings that are currently unavailable`
 
-source: 
+#### source: 
 - [Fix Missing Hibernate Option On Windows 10 Desktop (windowsloop.com)](https://windowsloop.com/fix-missing-hibernate-option/)

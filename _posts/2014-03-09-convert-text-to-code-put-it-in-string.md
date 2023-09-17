@@ -21,7 +21,7 @@ create as GUI like the bellow
 
 [![](https://1.bp.blogspot.com/-DGQRGGT2dTE/VzPRhyTA1pI/AAAAAAAAAFY/bYR9Jxc47w0VcIIQqgWtXh1IjgSaSTingCK4B/s640/img1.png)](http://1.bp.blogspot.com/-DGQRGGT2dTE/VzPRhyTA1pI/AAAAAAAAAFY/bYR9Jxc47w0VcIIQqgWtXh1IjgSaSTingCK4B/s1600/img1.png)
 
-Then add the following code to the input text ( TextChanged ) Event
+Then add the following code to the input text  `TextChanged`  Event
 
 ```csharp
 if (this.cmbLanguage.SelectedIndex == 1)
@@ -67,7 +67,7 @@ private string convertToVBCode(string[] lines, bool useStringBuilder, bool addNe
       output.Append("Dim str As New System.Text.StringBuilder(1024)\r\n\r\n");
       foreach (string l in lines)
       {
-         output.Append(string.Format("str.Append (\"{0}\"{1}) {2}", l.Replace("\"", "\"\""), addNewLineSymbole ? " &amp; Environment.NewLine " : "", "\r\n"));
+         output.Append(string.Format("str.Append (\"{0}\"{1}) {2}", l.Replace("\"", "\"\""), addNewLineSymbole ? " & Environment.NewLine " : "", "\r\n"));
        }
     }
     else
@@ -75,10 +75,9 @@ private string convertToVBCode(string[] lines, bool useStringBuilder, bool addNe
        output.Append("Dim str As String = \"\"\r\n\r\n");
        foreach (string l in lines)
        {
-           output.Append(string.Format("str &amp;= \"{0}\"{1} {2}", l.Replace("\"", "\"\""), addNewLineSymbole ? " &amp; Environment.NewLine " : "", "\r\n"));
+           output.Append(string.Format("str &= \"{0}\"{1} {2}", l.Replace("\"", "\"\""), addNewLineSymbole ? " & Environment.NewLine " : "", "\r\n"));
        }
     }
     return output.ToString();
 }
-
 ```

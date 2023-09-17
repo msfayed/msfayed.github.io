@@ -96,6 +96,7 @@ and the configuration will be like :
 
 That's it :)
 
-sources :
-
-[https://msdn.microsoft.com/en-us/library/dn771556(v=vs.120).aspx](https://msdn.microsoft.com/en-us/library/dn771556(v=vs.120).aspx) [https://blogs.msdn.microsoft.com/rido/2010/05/06/how-to-connect-to-tfs-through-authenticated-web-proxy/](https://blogs.msdn.microsoft.com/rido/2010/05/06/how-to-connect-to-tfs-through-authenticated-web-proxy/) [https://stackoverflow.com/a/38053045/1312036](https://stackoverflow.com/a/38053045/1312036)
+#### source: 
+- [https://msdn.microsoft.com/en-us/library/dn771556(v=vs.120).aspx](https://msdn.microsoft.com/en-us/library/dn771556(v=vs.120).aspx) 
+- [https://blogs.msdn.microsoft.com/rido/2010/05/06/how-to-connect-to-tfs-through-authenticated-web-proxy/](https://blogs.msdn.microsoft.com/rido/2010/05/06/how-to-connect-to-tfs-through-authenticated-web-proxy/) 
+- [https://stackoverflow.com/a/38053045/1312036](https://stackoverflow.com/a/38053045/1312036)

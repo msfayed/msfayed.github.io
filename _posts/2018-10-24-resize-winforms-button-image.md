@@ -136,6 +136,7 @@ public static class ButtonEx
 ```
 
 
-Sources :
+#### source: 
+
 - [https://social.microsoft.com/Forums/en-US/fcb7d14d-d15b-4336-971c-94a80e34b85e/editing-animated-gifs-in-c?forum=netfxbcl](https://www.blogger.com/goog_1696570594) 
 - [https://stackoverflow.com/a/87786/1312036](https://stackoverflow.com/a/87786/1312036)

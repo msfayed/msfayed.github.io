@@ -294,7 +294,7 @@ $ git gc --prune=now --aggressive
 ```
 
 
-Sources :
+#### source: 
 - [Azure DevOps Services : Use SSH key authentication](https://docs.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate?view=vsts)
 - [https://stackoverflow.com/a/3972103](https://stackoverflow.com/a/3972103)
 - [https://stackoverflow.com/questions/10564/how-can-i-set-up-an-editor-to-work-with-git-on-windows](https://stackoverflow.com/questions/10564/how-can-i-set-up-an-editor-to-work-with-git-on-windows) 
