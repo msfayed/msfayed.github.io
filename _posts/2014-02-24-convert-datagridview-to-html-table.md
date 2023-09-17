@@ -27,53 +27,53 @@ public static string ConvertToHtmlTable(DataGridView targetTable)
 
     var myBuilder = new StringBuilder();
 
-    myBuilder.Append("&lt;html");
-    myBuilder.Append("&lt;head&gt;");
-    myBuilder.Append("&lt;title&gt;");
+    myBuilder.Append("<html>");
+    myBuilder.Append("<head>");
+    myBuilder.Append("<title>");
     myBuilder.Append("Page-");
     myBuilder.Append(Guid.NewGuid().ToString());
-    myBuilder.Append("&lt;/title&gt;");
-    myBuilder.Append("&lt;/head&gt;");
-    myBuilder.Append("&lt;body&gt;");
-    myBuilder.Append("&lt;table border='1px' cellpadding='5' cellspacing='0' ");
-    myBuilder.Append("style='border: solid 1px Silver;'&gt;");
+    myBuilder.Append("</title>");
+    myBuilder.Append("</head>");
+    myBuilder.Append("<body>");
+    myBuilder.Append("<table border='1px' cellpadding='5' cellspacing='0' ");
+    myBuilder.Append("style='border: solid 1px Silver;'>");
 
-    myBuilder.Append("&lt;tr align='left' valign='top'&gt;");
+    myBuilder.Append("<tr align='left' valign='top'>");
 
     foreach (DataGridViewColumn myColumn in targetTable.Columns)
     {
         if (CanExport(myColumn.HeaderText))
         {
-            myBuilder.Append("&lt;td align='left' valign='top'&gt;");
+            myBuilder.Append("<td align='left' valign='top'>");
             myBuilder.Append(myColumn.HeaderText);
-            myBuilder.Append("&lt;/td&gt;");
+            myBuilder.Append("</td>");
         }
     }
 
-    myBuilder.Append("&lt;/tr&gt;");
+    myBuilder.Append("</tr>");
 
     //Add the data rows.
     foreach (DataGridViewRow myRow in targetTable.Rows)
     {
-        myBuilder.Append("&lt;tr align='left' valign='top'&gt;");
+        myBuilder.Append("<tr align='left' valign='top'>");
 
         foreach (DataGridViewColumn myColumn in targetTable.Columns)
         {
             if (CanExport(myColumn.HeaderText))
             {
-                myBuilder.Append("&lt;td align='left' valign='top'&gt;");
+                myBuilder.Append("<td align='left' valign='top'>");
                 myBuilder.Append(myRow.Cells[myColumn.HeaderText].Value.ToString());
-                myBuilder.Append("&lt;/td&gt;");
+                myBuilder.Append("</td>");
             }
         }
 
-        myBuilder.Append("&lt;/tr&gt;");
+        myBuilder.Append("</tr>");
     }
 
     //Close tags.
-    myBuilder.Append("&lt;/table&gt;");
-    myBuilder.Append("&lt;/body&gt;");
-    myBuilder.Append("&lt;/html&gt;");
+    myBuilder.Append("</table>");
+    myBuilder.Append("</body>");
+    myBuilder.Append("</html>");
 
     //Get the string for return.
     myHtmlFile = myBuilder.ToString();

@@ -32,7 +32,7 @@ public class cApp
         Console.WriteLine("Parameters Count = {0}", args.Length);
 
         // Display Parameters values
-        for(int i = 0; i &lt; args.Length; i++)
+        for(int i = 0; i < args.Length; i++)
         {
             Console.WriteLine("args[{0}] = [{1}]", i, args[i]);
         }

@@ -46,11 +46,11 @@ put the following code in the ( Combine ) Button Click Event
 ```csharp
  var myStr = new StringBuilder();
  int mCount = 0;
- for (int ii = 0; ii &lt; txtArrayInput.Lines.Length; ii++)
+ for (int ii = 0; ii < txtArrayInput.Lines.Length; ii++)
  {
      if (chkIgnoreEmptyLine.Checked)
      {
-         if (txtArrayInput.Lines[ii].Trim().Length &gt; 0)
+         if (txtArrayInput.Lines[ii].Trim().Length > 0)
          {
 
             myStr.Append(txtQuotes.Text + ((chkTrim.Checked) ? txtArrayInput.Lines[ii].Trim() : txtArrayInput.Lines[ii]) + txtQuotes.Text + txtSeparator.Text);

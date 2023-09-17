@@ -13,10 +13,10 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-75071197822995224
 blogger_orig_url: https://www.fayed.org/2018/10/resize-winforms-button-image.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-<div dir="ltr" style="text-align: left;" trbidi="on">
-Resize WinForms Button Image ( support time Animated GIF )<br />
-<br /></div>
+
+
+Resize WinForms Button Image ( support time Animated GIF )
+
 ```csharp
 using System;
 using System.Collections.Generic;
@@ -33,11 +33,11 @@ public static class ButtonEx
 
         var mImageFrames = AnimatedGif.ExtractFrames(btn.Image, mSize);
 
-        if (mImageFrames.Count &gt; 0)
+        if (mImageFrames.Count > 0)
         {
             btn.Image = mImageFrames[0].Image;
 
-            if (mImageFrames.Count &gt; 1)
+            if (mImageFrames.Count > 1)
             {
                 var mIndex = 0;
                 var mTimer = new Timer();
@@ -45,11 +45,11 @@ public static class ButtonEx
                 mTimer.Interval = mImageFrames[0].Duration * 15;
 
 
-                mTimer.Tick += (object sender, EventArgs e) =&gt;
+                mTimer.Tick += (object sender, EventArgs e) =>
                 {
                     mTimer.Stop();
 
-                    if (mIndex &lt; mImageFrames.Count - 1)
+                    if (mIndex < mImageFrames.Count - 1)
                         mIndex++;
                     else
                         mIndex = 0;
@@ -86,7 +86,7 @@ public static class ButtonEx
             try
             {
                 int frames = img.GetFrameCount(FrameDimension.Time);
-                if (frames &lt;= 1) throw new ArgumentException("Image not animated");
+                if (frames <= 1) throw new ArgumentException("Image not animated");
                 byte[] times = img.GetPropertyItem(0x5100).Value;
                 int frame = 0;
                 for (; ; )
@@ -98,7 +98,7 @@ public static class ButtonEx
                     else
                         mImages.Add(new AnimatedGifFrame(new Bitmap(img).Resize(mNewSize.Value), dur));
 
-                    if (++frame &gt;= frames)
+                    if (++frame >= frames)
                         break;
 
                     img.SelectActiveFrame(FrameDimension.Time, frame);
@@ -132,14 +132,10 @@ public static class ButtonEx
         }
     }
 }
-</animatedgifframe></animatedgifframe></pre>
-<br />
-<br />
-Sources :<br />
-<a href="https://www.blogger.com/goog_1696570594"><br /></a>
-<a href="https://www.blogger.com/goog_1696570594">https://social.microsoft.com/Forums/en-US/fcb7d14d-d15b-4336-971c-94a80e34b85e/editing-animated-gifs-in-c?forum=netfxbcl</a><br />
-<br />
-<a href="https://stackoverflow.com/a/87786/1312036">https://stackoverflow.com/a/87786/1312036</a><br />
-<br />
-<br />
-</div>
+
+```
+
+
+Sources :
+- [https://social.microsoft.com/Forums/en-US/fcb7d14d-d15b-4336-971c-94a80e34b85e/editing-animated-gifs-in-c?forum=netfxbcl](https://www.blogger.com/goog_1696570594) 
+- [https://stackoverflow.com/a/87786/1312036](https://stackoverflow.com/a/87786/1312036)

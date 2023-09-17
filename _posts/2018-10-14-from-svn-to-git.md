@@ -107,7 +107,7 @@ You can use this one-liner to build a template from your existing SVN repository
 
 
 ```shell
- svn log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" &lt;"$2">"}' | sort -u > users.txt
+ svn log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2">"}' | sort -u > users.txt
 ```
 
 Now pull the SVN data from the repository:

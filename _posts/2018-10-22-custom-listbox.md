@@ -12,10 +12,9 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-32305588394708083
 blogger_orig_url: https://www.fayed.org/2018/10/custom-listbox.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
-Just a custom ListBox to hold any Control, I made it in C# to hold my UserControls :<br />
-<div>
-<br /></div>
+Just a custom ListBox to hold any Control, made in C# to hold my UserControls :
+
+
 ```csharp
  
 using System.Windows.Forms;
@@ -53,7 +52,7 @@ public class GList : FlowLayoutPanel
 
     public void Clear()
     {
-        while (base.Controls.Count &gt; 0)
+        while (base.Controls.Count > 0)
         {
             var c = base.Controls[0];
             base.Controls.Remove(c);
@@ -69,9 +68,9 @@ public class GList : FlowLayoutPanel
 
     void SetupAnchors()
     {
-        if (base.Controls.Count &gt; 0)
+        if (base.Controls.Count > 0)
         {
-            for (int i = 0; i &lt; base.Controls.Count; i++)
+            for (int i = 0; i < base.Controls.Count; i++)
             {
                 var c = base.Controls[i];
                 if (i == 0)
@@ -87,9 +86,9 @@ public class GList : FlowLayoutPanel
 }
 
 
-</pre>
-<div>
-<br /></div>
-Source :&nbsp;<a href="https://www.codeproject.com/Articles/333864/Flexible-List-Control">https://www.codeproject.com/Articles/333864/Flexible-List-Control</a><br />
-<br />
-<br /></div>
+```
+
+
+Source : [https://www.codeproject.com/Articles/333864/Flexible-List-Control](https://www.codeproject.com/Articles/333864/Flexible-List-Control)
+
+

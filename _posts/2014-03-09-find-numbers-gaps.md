@@ -35,7 +35,7 @@ int mMax = myData.Max();
 
 StringBuilder myStr = new StringBuilder();
 int mCount = 0;
-for (int ii = mMin; ii &lt;= mMax; ii++)
+for (int ii = mMin; ii <= mMax; ii++)
 {
     if (myData.Contains<int>(ii) == false)
     {
