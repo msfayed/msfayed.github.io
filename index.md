@@ -9,7 +9,7 @@ description: A playground for my experiments
   {% for post in site.posts %}
   <li>
     <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-    {{ post.date | date: "%-d %B %Y"}}
+    <span class="date">{{ post.date | date: "%-d %B %Y"}}</span>
   </li>
   {% endfor %}
 </ul>

@@ -16,27 +16,28 @@ blogger_orig_url: https://www.fayed.org/2020/10/windows-10-vpn-error-809.html
 
 To fix this error, a [one-time registry change](https://documentation.meraki.com/MX-Z/Client_VPN/Troubleshooting_Client_VPN#Windows_Error_809) is required because the VPN server and/or client is behind NAT (e.g. home router). run the following from an [elevated command prompt](http://www.winhelponline.com/blog/open-elevated-command-prompt-windows/). You must reboot your PC when finished.
 
-*   For Windows Vista, 7, 8.x and 10
+* For Windows Vista, 7, 8, 10 and 11
 
     ```shell
-    REG ADD HKLM\\SYSTEM\\CurrentControlSet\\Services\\PolicyAgent /v AssumeUDPEncapsulationContextOnSendRule /t REG\_DWORD /d 0x2 /f
+    REG ADD HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent /v AssumeUDPEncapsulationContextOnSendRule /t REG_DWORD /d 0x2 /f
     ```
     
-*   For Windows XP ONLY
+* For Windows XP ONLY
     
-    ```
-    REG ADD HKLM\\SYSTEM\\CurrentControlSet\\Services\\IPSec /v AssumeUDPEncapsulationContextOnSendRule /t REG\_DWORD /d 0x2 /f
+    ```shell
+    REG ADD HKLM\SYSTEM\CurrentControlSet\Services\IPSec /v AssumeUDPEncapsulationContextOnSendRule /t REG_DWORD /d 0x2 /f
     ```
     
 
 Although uncommon, some Windows systems disable IPsec encryption, causing the connection to fail. To re-enable it, run the following command and reboot your PC.
 
-*   For Windows XP, Vista, 7, 8.x and 10
-    ```
-    REG ADD HKLM\\SYSTEM\\CurrentControlSet\\Services\\RasMan\\Parameters /v ProhibitIpSec /t REG\_DWORD /d 0x0 /f
+* For Windows XP, Vista, 7, 8, 10 and 11
+    
+    ```shell
+    REG ADD HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters /v ProhibitIpSec /t REG_DWORD /d 0x0 /f
     ```
     
 
 SOURCE: 
 
-- https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients.md#windows-error-809
+- [https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients.md#windows-error-809](https://github.com/hwdsl2/setup-ipsec-vpn/blob/master/docs/clients.md#windows-error-809)
