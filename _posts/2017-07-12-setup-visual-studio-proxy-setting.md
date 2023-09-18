@@ -10,9 +10,8 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-48119192408048818
 blogger_orig_url: https://www.fayed.org/2017/07/setup-visual-studio-proxy-setting.html
 ---
 
-<div dir="ltr" style="text-align: left;" trbidi="on">
 
-If you are working with Visual Studio behind your company proxy you may face many issues like failed to load **nuget** packages ,failed to load Visual Studio **Extensions and Updates **or failed to login with your Microsoft account within Visual Studio.
+If you are working with Visual Studio behind your company proxy you may face many issues like failed to load **nuget** packages ,failed to load Visual Studio **Extensions and Updates** or failed to login with your Microsoft account within Visual Studio.
 
 To solve these problems we have to let visual studio use our proxy correctly , to setup the proxy settings :
 
@@ -28,7 +27,7 @@ Open ( `devenv.exe.config` ) file and inside `<system.net>` node add the bellow 
 </system.net>
 ```
 
-if you got an error like :
+if you got an error like:
 
 ```
 System.Net.WebException: The underlying connection was closed: An unexpected error occurred on a send.......
