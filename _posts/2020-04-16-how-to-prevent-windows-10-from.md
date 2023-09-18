@@ -4,6 +4,7 @@ title: Windows 10 disable automatically adding keyboard layouts
 date: '2020-04-16T09:05:00.003-03:00'
 author: Mohammed Fayed
 tags:
+- Windows 10
 modified_time: '2020-09-24T16:07:42.185-03:00'
 blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-8110984644406192510
 blogger_orig_url: https://www.fayed.org/2020/04/how-to-prevent-windows-10-from.html

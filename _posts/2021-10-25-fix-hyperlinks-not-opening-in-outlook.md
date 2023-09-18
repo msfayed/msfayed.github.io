@@ -4,6 +4,8 @@ title: Fix Hyperlinks Not Opening in Outlook on Windows 10
 date: '2021-10-25T10:42:00.009-03:00'
 author: Mohammed Fayed
 tags:
+- Windows 10
+- Outlook
 modified_time: '2021-10-25T10:42:56.799-03:00'
 thumbnail: https://lh3.googleusercontent.com/-OysbL3uTaNY/YXazWAuvq4I/AAAAAAACUzA/6MhWFoLtMnw4I4vsX0Hxoe0RSsrrsigeACNcBGAsYHQ/s72-w422-c-h96/image.png
 blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-6266438952321502717

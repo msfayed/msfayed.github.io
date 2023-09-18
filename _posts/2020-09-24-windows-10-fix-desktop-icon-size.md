@@ -4,6 +4,7 @@ title: Windows 10 - fix desktop icon size
 date: '2020-09-24T16:14:00.005-03:00'
 author: Mohammed Fayed
 tags:
+- Windows 10
 modified_time: '2020-09-24T16:14:49.235-03:00'
 thumbnail: https://1.bp.blogspot.com/-LGmkc_8sVDQ/X2zwA22ZAwI/AAAAAAACExg/fb49MYEriykoBd9VTYa2YHjYEvgcZe7bgCNcBGAsYHQ/s72-w624-c-h356/win10-desktop-icon-size.jpg
 blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-7086700461930510764

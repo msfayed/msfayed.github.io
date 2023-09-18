@@ -7,6 +7,7 @@ tags:
 - Oracle
 - C#
 - DB
+- Windows 10
 modified_time: '2019-06-12T03:04:52.251-03:00'
 blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-9066043889771338412
 blogger_orig_url: https://www.fayed.org/2019/06/connecting-to-oracle-db-from-windows-10.html

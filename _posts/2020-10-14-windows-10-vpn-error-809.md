@@ -4,6 +4,8 @@ title: Windows 10 - VPN Error 809
 date: '2020-10-14T13:32:00.005-03:00'
 author: Mohammed Fayed
 tags:
+- Windows 10
+- VPN
 modified_time: '2020-10-14T13:32:46.077-03:00'
 blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-6471477316322743622
 blogger_orig_url: https://www.fayed.org/2020/10/windows-10-vpn-error-809.html
