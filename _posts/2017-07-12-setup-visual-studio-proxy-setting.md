@@ -85,11 +85,12 @@ namespace Fayed.AuthProxy
 and the configuration will be like :
 
 ```xml
-<system .net="">
+<system.net="">
  <defaultproxy>
-  <module type="Fayed.AuthProxy.AuthProxyModule, Fayed.AuthProxy">
- </module></defaultproxy>
-</system>
+    <module type="Fayed.AuthProxy.AuthProxyModule, Fayed.AuthProxy">
+    </module>
+ </defaultproxy>
+</system.net>
 ```
 
 
