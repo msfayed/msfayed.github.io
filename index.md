@@ -8,7 +8,7 @@ description: A playground for my experiments
 <ul>
   {% for post in site.posts %}
   <li>
-    <h4><span class="date">{{ post.date | date: "%-d %B %Y"}}</span> <a href="{{ post.url }}">{{ post.title }}</a></h4>
+    <h4><span class="date">{{ post.date | date: "%Y-%m-%d "}}</span> <a href="{{ post.url }}">{{ post.title }}</a></h4>
     
   </li>
   {% endfor %}
