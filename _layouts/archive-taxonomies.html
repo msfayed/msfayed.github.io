@@ -35,9 +35,9 @@ layout: default
             <a class="taxonomy" href="{{ link | relative_url }}">
               <span>
                 {%- if page.type == 'tags' -%}
-                  {{ slugified_taxonomy_name }}
-                {%- else -%}
                   {{ taxonomy_name }}
+                {%- else -%}
+                  {{ slugified_taxonomy_name }}
                 {%- endif -%}
               </span>
               <span class="taxonomy-count">{{ posts.size }}</span>
@@ -58,9 +58,9 @@ layout: default
     {%- if posts.size == i -%}
       <h2 id="{{ slugified_taxonomy_name }}">
         {%- if page.type == 'tags' -%}
-          {{ slugified_taxonomy_name }}
-        {%- else -%}
           {{ taxonomy_name }}
+        {%- else -%}
+          {{ slugified_taxonomy_name }}
         {%- endif -%}
       </h2>
       <ul class="post-list-by-taxonomy">
