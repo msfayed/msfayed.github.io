@@ -10,14 +10,14 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-81109846444061925
 blogger_orig_url: https://www.fayed.org/2020/04/how-to-prevent-windows-10-from.html
 ---
 
- ### How to disable automatically adding keyboard layouts in Windows 10?
+### How to disable automatically adding keyboard layouts in Windows 10?
 
- I have created a `RemovePreload.reg` text file with the following content, this way this fix can easily be re-applied every time without navigating the registry:
+I have created a `RemovePreload.reg` text file with the following content, this way this fix can easily be re-applied every time without navigating the registry:
  
- ```
+```
 Windows Registry Editor Version 5.00
 [-HKEY_USERS\.DEFAULT\Keyboard Layout\Preload] 
- ```
+```
 
 To use this, you can just double click it and restart or sign out.
 
