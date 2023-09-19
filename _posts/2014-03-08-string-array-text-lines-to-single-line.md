@@ -14,9 +14,9 @@ blogger_orig_url: https://www.fayed.org/2014/03/string-array-text-lines-to-singl
 
 Array To Line is a small tool that is meant to convert an array of lines to single line of text with proper formatting and concatenation string.
 
-**Usage :**  assume you are executing a SQL query against your database and you are using then IN operator that allows you to specify multiple values in a WHERE clause , but the values here is from an EXCEL Sheet ( column ) with about 100 or more value !! of course you will hate your self while your are formatting the SQL statement and you will hate your self more if you made a mistake .
+**Usage :**  assume you are executing a SQL query against your database and you are using then `IN` operator that allows you to specify multiple values in a `WHERE` clause , but the values here is from an EXCEL Sheet ( column ) with about 100 or more value !! of course you will hate your self while your are formatting the SQL statement and you will hate your self more if you made a mistake .
 
-but if have only to copy all values to a Text Box in your tool and click a Button on the screen and get the result values with the proper quotes and separator ready for execute I think that you will be happy :)
+but if have only to copy all values to a TextBox in your tool and click a Button on the screen and get the result values with the proper quotes and separator ready for execute I think that you will be happy :)
 
 **The Code :**
 create as GUI like the bellow screen shoot
