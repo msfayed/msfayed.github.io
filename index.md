@@ -14,5 +14,3 @@ description: A playground for my experiments
   {% endfor %}
 </ul>
 
-## [Tags](tags.md)
-
