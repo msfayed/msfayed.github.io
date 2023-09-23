@@ -3,7 +3,7 @@ layout: default
 title: Enable Docker Remote API
 date: '2020-06-23T03:46:00.000-03:00'
 author: Mohammed Fayed
-tags:
+tags: Docker
 modified_time: '2020-06-23T03:46:36.903-03:00'
 blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-1347511242304256982
 blogger_orig_url: https://www.fayed.org/2020/06/enable-docker-remote-api.html
