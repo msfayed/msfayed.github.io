@@ -1,18 +1,18 @@
 ---
 layout: default
 title: Native Docker in WSL - even in a VM, No Docker Desktop
-date: '2023-09-23T10:42:00.009-03:00'
+date: '2023-09-23T10:00:00.000-03:00'
 author: Mohammed Fayed
 tags:
 - Docker
 - WSL
-modified_time: '2023-09-23T10:42:00.009-03:00'
+modified_time: '2023-09-23T10:00:00.000-03:00'
 ---
 
 # Native Docker in WSL - even in a VM, No Docker Desktop
 
 
-![docker](../assets/img/20230923/wsl-docker.png)
+![docker](/assets/img/20230923/wsl-docker.png)
 
 
 ## Install WSL in a VM 
