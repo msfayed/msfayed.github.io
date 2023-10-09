@@ -33,13 +33,13 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-28296555860013471
 <div dir="rtl" style="text-align: right;">
 <br /></div>
 <div class="separator" dir="rtl" style="clear: both; text-align: center;">
-<object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/5MnwlenCgSA/0.jpg" height="266" width="320"><param name="movie" value="https://youtube.googleapis.com/v/5MnwlenCgSA&source=uds" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://youtube.googleapis.com/v/5MnwlenCgSA&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<embed width="320" height="266"  src="https://youtube.googleapis.com/v/5MnwlenCgSA&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></div>
 <div dir="rtl" style="background: rgb(255, 255, 255); border: 0px; color: #494949; font-family: verdana, arial, sans-serif; font-size: 12px; line-height: 20.4px; margin-bottom: 1.2em; margin-top: 0.6em; outline: 0px; padding: 0px; text-align: right; vertical-align: baseline;">
 <br /></div>
 <div dir="rtl" style="text-align: right;">
 والفيديو التالي أيضا</div>
 <div class="separator" dir="rtl" style="clear: both; text-align: center;">
-<object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/XNgDWBDBSFQ/0.jpg" height="266" width="320"><param name="movie" value="https://youtube.googleapis.com/v/XNgDWBDBSFQ&source=uds" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://youtube.googleapis.com/v/XNgDWBDBSFQ&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<embed width="320" height="266"  src="https://youtube.googleapis.com/v/XNgDWBDBSFQ&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></div>
 <div dir="rtl" style="background: rgb(255, 255, 255); border: 0px; color: #494949; font-family: verdana, arial, sans-serif; font-size: 12px; line-height: 20.4px; margin-bottom: 1.2em; margin-top: 0.6em; outline: 0px; padding: 0px; text-align: right; vertical-align: baseline;">
 <br /></div>
 <div dir="rtl" style="text-align: right;">
@@ -48,13 +48,13 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-28296555860013471
 <div style="text-align: right;">
 </div>
 <div class="separator" style="clear: both; text-align: center;">
-<object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/lWCX-yWlRH4/0.jpg" height="266" width="320"><param name="movie" value="https://youtube.googleapis.com/v/lWCX-yWlRH4&source=uds" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://youtube.googleapis.com/v/lWCX-yWlRH4&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<embed width="320" height="266"  src="https://youtube.googleapis.com/v/lWCX-yWlRH4&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></div>
 <div style="background: rgb(255, 255, 255); border: 0px; color: #494949; font-family: verdana, arial, sans-serif; font-size: 12px; line-height: 20.4px; margin-bottom: 1.2em; margin-top: 0.6em; outline: 0px; padding: 0px; text-align: right; vertical-align: baseline;">
 <span style="font-family: &quot;tahoma&quot; , &quot;arial&quot; , &quot;helvetica&quot; , sans-serif; font-size: xx-small; line-height: 20.3999996185303px;"><br /></span></div>
 <div style="text-align: right;">
 وهذا أيضا&nbsp;</div>
 <div class="separator" style="clear: both; text-align: center;">
-<object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/0bgtN7ZJlfg/0.jpg" height="266" width="320"><param name="movie" value="https://youtube.googleapis.com/v/0bgtN7ZJlfg&source=uds" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://youtube.googleapis.com/v/0bgtN7ZJlfg&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<embed width="320" height="266"  src="https://youtube.googleapis.com/v/0bgtN7ZJlfg&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></div>
 <div style="text-align: right;">
 <br /></div>
 <div style="text-align: right;">
@@ -64,13 +64,13 @@ blogger_id: tag:blogger.com,1999:blog-3008009747231704115.post-28296555860013471
 <div class="separator" style="clear: both;">
 </div>
 <div style="text-align: center;">
-<object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/P3G6fwv1iC0/0.jpg" height="266" width="320"><param name="movie" value="https://youtube.googleapis.com/v/P3G6fwv1iC0&source=uds" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://youtube.googleapis.com/v/P3G6fwv1iC0&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<embed width="320" height="266"  src="https://youtube.googleapis.com/v/P3G6fwv1iC0&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></div>
 <br />
 <br />
 <b>وهذه آراء بعض المشتركين في هذه الدورة</b><br />
 <b><br /></b>
 <div class="separator" style="clear: both; text-align: center;">
-<object class="BLOGGER-youtube-video" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" data-thumbnail-src="https://ytimg.googleusercontent.com/vi/b13kdVK5aY4/0.jpg" height="266" width="320"><param name="movie" value="https://youtube.googleapis.com/v/b13kdVK5aY4&source=uds" /><param name="bgcolor" value="#FFFFFF" /><param name="allowFullScreen" value="true" /><embed width="320" height="266"  src="https://youtube.googleapis.com/v/b13kdVK5aY4&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></object></div>
+<embed width="320" height="266"  src="https://youtube.googleapis.com/v/b13kdVK5aY4&source=uds" type="application/x-shockwave-flash" allowfullscreen="true"></embed></div>
 <div style="background: rgb(255, 255, 255); border: 0px; color: #494949; line-height: 20.4px; margin-bottom: 1.2em; margin-top: 0.6em; outline: 0px; padding: 0px; text-align: right; vertical-align: baseline;">
 <span style="font-family: &quot;tahoma&quot; , &quot;arial&quot; , &quot;helvetica&quot; , sans-serif; font-size: x-small;"><br /></span></div>
 <div style="text-align: right;">
