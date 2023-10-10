@@ -12,7 +12,7 @@ modified_time: '2023-09-23T10:00:00.000-03:00'
 # Native Docker in WSL - even in a VM, No Docker Desktop
 
 
-![docker](/assets/img/20230923/wsl-docker.png)
+![docker](/assets/2023-09-23/wsl-docker.png)
 
 
 ## Install WSL in a VM 

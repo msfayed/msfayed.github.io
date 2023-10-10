@@ -3,8 +3,8 @@
 
 @import "{{ site.theme }}";
 
-.container-lg .main-content {
-    max-width: 95% !important;
+.container-lg, .main-content {
+    min-width: 95% !important;
   }
 
 
