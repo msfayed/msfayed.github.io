@@ -64,8 +64,6 @@ RUN apt-get update && apt-get -y install wget \
 
 
 CMD ["google-chrome","--no-sandbox"]
-
-# docker build . -t chrome
 ```
 
 ```shell
