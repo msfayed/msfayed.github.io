@@ -13,7 +13,7 @@ modified_time: '2023-12-22T10:00:00.000-03:00'
 
 Make sure you are using Windows 10 ( build 19044 or later )  or Windows 11
 
-upgrade WSL to grabe the latest (WSLg)[https://github.com/microsoft/wslg] update.
+upgrade WSL to grabe the latest [WSLg](https://github.com/microsoft/wslg) update.
 
 ```shell
 # from an elevated command prompt or powershell.
@@ -23,7 +23,7 @@ wsl --update
 wsl --shutdown 
 ```
 
-Ceate Dockefile with bellow content:
+Create Dockefile with bellow content:
 
 ```dockerfile
 FROM ubuntu
