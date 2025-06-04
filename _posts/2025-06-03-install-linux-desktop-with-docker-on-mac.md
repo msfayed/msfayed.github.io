@@ -17,7 +17,7 @@ modified_time: '2025-06-03T10:00:00.000-03:00'
 
 - Download Ubuntu Linux Server ISO (ARM) [from here](https://ubuntu.com/download/server/arm)
 
-- Create new VM, choose `Virtualize` then `Linux` and then select `Use Apple Virtualization` option and selected the downloaded ISO file.
+- Create new VM, choose `Virtualize` then `Linux` and then select the downloaded ISO file.
 
 - Make sure to follow these setps during Linux installation process:
   
@@ -50,7 +50,7 @@ modified_time: '2025-06-03T10:00:00.000-03:00'
 
     sudo groupadd docker
     sudo gpasswd -a $USER docker
-    sudo chowen $USER:docker /var/run/docker.sock
+    sudo chown $USER:docker /var/run/docker.sock
     ```
   
   - Install Ubuntu-Desktop
