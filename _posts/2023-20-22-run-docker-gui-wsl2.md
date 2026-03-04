@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Running docker GUI Apps in WLS2 
+title: Running docker GUI Apps in WSL2 
 date: '2023-12-22T10:00:00.000-03:00'
 author: Mohammed Fayed
 tags:
@@ -9,7 +9,7 @@ tags:
 modified_time: '2023-12-22T10:00:00.000-03:00'
 ---
 
-# Running docker GUI Apps in WLS2 
+# Running docker GUI Apps in WSL2 
 
 Make sure you are using Windows 10 ( build 19044 or later )  or Windows 11
 
