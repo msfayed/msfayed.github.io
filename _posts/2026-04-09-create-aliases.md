@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: "How to Create Useful Shell Aliases"
 date: 2026-04-09
 categories: [shell, productivity]
