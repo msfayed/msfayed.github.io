@@ -1,10 +1,3 @@
----
-layout: default
-title: "Syncing Millions of Files to Cloudflare R2 Using Rclone"
-date: 2026-11-03
-categories: [shell, productivity]
----
-
 # Ultimate Guide: Syncing Millions of Files to Cloudflare R2 Using Rclone
 
 This guide details how to install, configure, and optimize **Rclone** to handle high-performance, one-way mirroring of millions of files into an empty or partially full Cloudflare R2 bucket without crashing or blowing up your API costs.
@@ -95,7 +88,28 @@ rclone copy /path/to/local/folder r2:your-bucket-name \
 
 ---
 
-## 5. Ensuring Uninterrupted Background Execution via SSH (`nohup`)
+## 5. Targeting a Specific Sub-Folder Only
+
+If your millions of files are divided into structured sub-directories (e.g., by year, category, or user ID), you can dramatically speed up operations by isolated syncs. Targeting a sub-folder cuts scanning down to just that path, bypassing the rest of your dataset entirely.
+
+### The Sub-Folder Command
+```bash
+rclone copy /path/to/local/folder/sub-directory r2:your-bucket-name/sub-directory \
+  --no-traverse \
+  --size-only \
+  --transfers 64 \
+  --checkers 64 \
+  --progress
+```
+
+### Strategic Rules for Sub-Folders:
+* **Append the sub-folder to both paths:** Ensure you match the paths exactly on both sides (`/path/to/local/folder/images/2026` to `r2:your-bucket-name/images/2026`). If you omit the destination suffix, Rclone will dump the *contents* of your local folder directly into the bucket root.
+* **When to combine with `--no-traverse`:** You can safely bring back `--no-traverse` here **only** if you know this specific sub-folder is completely empty on R2, or contains very few files. This prevents Rclone from running a full inventory scan.
+* **When to drop `--no-traverse`:** If you are resuming a broken upload *inside* that specific sub-folder, drop `--no-traverse` and add `--fast-list` so Rclone lists only that specific directory's existing remote files efficiently.
+
+---
+
+## 6. Ensuring Uninterrupted Background Execution via SSH (`nohup`)
 
 If you are managing your server over SSH, closing your terminal app sends a hang-up signal (`SIGHUP`) that will instantly kill your upload. To prevent this without installing third-party tools like tmux, wrap your command in a self-healing `while` loop and execute it using **`nohup`** (No Hang Up).
 
