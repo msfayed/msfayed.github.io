@@ -1,3 +1,10 @@
+---
+layout: default
+title: "Syncing Millions of Files to Cloudflare R2 Using Rclone"
+date: 2026-11-03
+categories: [shell, productivity]
+---
+
 # Ultimate Guide: Syncing Millions of Files to Cloudflare R2 Using Rclone
 
 This guide details how to install, configure, and optimize **Rclone** to handle high-performance, one-way mirroring of millions of files into an empty or partially full Cloudflare R2 bucket without crashing or blowing up your API costs.
