@@ -22,10 +22,8 @@ Save the following code as `generate_sitemaps.sh`:
 # CONFIGURATION
 # ==============================================================================
 # Change these variables to match your setup
-#WEB_ROOT="/var/www/html"
-#DOMAIN="https://yourwebsite.com"
-WEB_ROOT="/docker-volume/var-www/static.qariya.info/www.qariya.info/vb"
-DOMAIN="https://www.www.qariya.info/vb"
+WEB_ROOT="/var/www/html"
+DOMAIN="https://yourwebsite.com"
 
 # ==============================================================================
 # STEP 1: DISCOVER FILES AND CHUNK THE PATHS
