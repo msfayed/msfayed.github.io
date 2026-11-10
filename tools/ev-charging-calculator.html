@@ -124,6 +124,26 @@
       font-size: 0.8rem;
     }
 
+    .check-option {
+      display: flex;
+      min-height: 44px;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .check-option input[type="checkbox"] {
+      width: 18px;
+      min-width: 18px;
+      min-height: 18px;
+      margin: 0;
+      padding: 0;
+      accent-color: var(--green);
+    }
+
     .vehicle-section {
       min-width: 0;
       margin: 22px 0 0;
@@ -147,6 +167,57 @@
       margin-bottom: 9px;
       font-size: 0.9rem;
       font-weight: 700;
+    }
+
+    .pricing-mode {
+      min-width: 0;
+      margin: 0 0 20px;
+      padding: 0;
+      border: 0;
+    }
+
+    .pricing-mode legend {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .mode-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border-radius: 6px;
+      background: #e9efea;
+    }
+
+    .mode-option {
+      display: flex;
+      min-width: 0;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .mode-option:has(input:checked) {
+      background: var(--paper);
+      color: var(--green-dark);
+    }
+
+    .mode-option input[type="radio"] {
+      width: 16px;
+      min-width: 16px;
+      min-height: 16px;
+      padding: 0;
+      accent-color: var(--green);
     }
 
     .preset-buttons {
@@ -378,7 +449,7 @@
         gap: 20px 16px;
       }
 
-      .field:first-child {
+      #total-paid-field {
         grid-column: 1 / -1;
       }
 
@@ -412,15 +483,8 @@
       <section class="panel" aria-labelledby="inputs-heading">
         <h2 id="inputs-heading">Station receipt</h2>
         <form id="calculator" novalidate>
-          <div class="preset-picker" role="group" aria-label="Station presets">
-            <span class="preset-picker-label">Sample station</span>
-            <div class="preset-buttons">
-              <button class="preset-button" id="delridge-preset" type="button" data-preset data-connection-fee="0" data-tax-rate="0" data-price-per-kwh="0.19" data-charging-power="3.0">Delridge</button>
-              <button class="preset-button" id="royal-towers-preset" type="button" data-preset data-connection-fee="0.75" data-tax-rate="14" data-price-per-kwh="0.25" data-charging-power="3.0">Royal Towers</button>
-            </div>
-          </div>
           <div class="fields">
-            <div class="field">
+            <div class="field" id="total-paid-field">
               <label for="total-paid">Total paid</label>
               <p class="field-note" id="total-note">The full amount charged, including tax</p>
               <div class="input-wrap">
@@ -428,7 +492,29 @@
                 <input id="total-paid" name="total-paid" type="number" min="0" step="any" inputmode="decimal" placeholder="0.00" aria-describedby="total-note" required>
               </div>
             </div>
-
+          </div>
+          <div class="preset-picker" role="group" aria-label="Station presets">
+            <span class="preset-picker-label">Sample station</span>
+            <div class="preset-buttons">
+              <button class="preset-button" id="delridge-preset" type="button" data-preset data-pricing-mode="kwh" data-connection-fee="0" data-tax-rate="0" data-price-per-kwh="0.19" data-charging-power="3.0">Delridge</button>
+              <button class="preset-button" id="royal-towers-preset" type="button" data-preset data-pricing-mode="kwh" data-connection-fee="0.75" data-tax-rate="14" data-price-per-kwh="0.25" data-charging-power="3.0">Royal Towers</button>
+              <button class="preset-button" id="bedros-lane-preset" type="button" data-preset data-pricing-mode="hour" data-connection-fee="0" data-tax-rate="14" data-price-per-hour="2" data-station-capacity="6" data-power-adjustment="true">Bedros Lane</button>
+            </div>
+          </div>
+          <fieldset class="pricing-mode">
+            <legend>Station pricing</legend>
+            <div class="mode-options">
+              <label class="mode-option" for="pricing-mode-kwh">
+                <input id="pricing-mode-kwh" name="pricing-mode" type="radio" value="kwh" checked>
+                <span>Per kWh</span>
+              </label>
+              <label class="mode-option" for="pricing-mode-hour">
+                <input id="pricing-mode-hour" name="pricing-mode" type="radio" value="hour">
+                <span>Per hour</span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="fields">
             <div class="field">
               <label for="connection-fee">Connection fee</label>
               <p class="field-note" id="fee-note">Before tax</p>
@@ -447,12 +533,39 @@
               </div>
             </div>
 
-            <div class="field">
+            <div class="field" id="energy-rate-field">
               <label for="price-per-kwh">Cost per kilowatt-hour</label>
               <p class="field-note" id="price-note">Before tax</p>
               <div class="input-wrap">
                 <span class="input-prefix" aria-hidden="true">$</span>
                 <input id="price-per-kwh" name="price-per-kwh" type="number" min="0" step="any" inputmode="decimal" value="0.25" aria-describedby="price-note" required>
+              </div>
+            </div>
+
+            <div class="field" id="hourly-rate-field" hidden>
+              <label for="price-per-hour">Station price per hour</label>
+              <p class="field-note" id="hourly-rate-note">Before tax; adjusted for power used</p>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">$</span>
+                <input id="price-per-hour" name="price-per-hour" type="number" min="0" step="any" inputmode="decimal" value="2" aria-describedby="hourly-rate-note">
+                <span class="input-suffix" aria-hidden="true">/ hour</span>
+              </div>
+            </div>
+
+            <div class="field" id="power-adjustment-field" hidden>
+              <label class="check-option" for="adjust-price-by-power">
+                <input id="adjust-price-by-power" name="adjust-price-by-power" type="checkbox" checked aria-describedby="power-adjustment-note">
+                <span>Adjust price for power used</span>
+              </label>
+              <p class="field-note" id="power-adjustment-note">Turn off for a fixed hourly rate regardless of station capacity.</p>
+            </div>
+
+            <div class="field" id="station-capacity-field" hidden>
+              <label for="station-capacity">Station power capacity</label>
+              <p class="field-note" id="capacity-note">Maximum station output in kW</p>
+              <div class="input-wrap">
+                <input id="station-capacity" name="station-capacity" type="number" min="0" step="any" inputmode="decimal" value="6.7" aria-describedby="capacity-note">
+                <span class="input-suffix" aria-hidden="true">kW</span>
               </div>
             </div>
 
@@ -469,8 +582,8 @@
             <legend>Vehicle estimates</legend>
             <div class="fields">
             <div class="field">
-              <label for="charging-power">Charging power per hour</label>
-              <p class="field-note" id="charging-power-note">Used only when session duration is blank</p>
+              <label for="charging-power">Average vehicle charging power</label>
+              <p class="field-note" id="charging-power-note">Used for fixed hourly pricing and estimated session duration</p>
               <div class="input-wrap">
                 <input id="charging-power" name="charging-power" type="number" min="0" step="any" inputmode="decimal" value="3.0" aria-describedby="charging-power-note">
                 <span class="input-suffix" aria-hidden="true">kW</span>
@@ -503,14 +616,15 @@
         <dl class="breakdown" aria-label="Cost breakdown">
           <div class="breakdown-row" id="range-row" hidden><dt>Estimated driving range</dt><dd><strong id="range-estimate">--</strong></dd></div>
           <div class="breakdown-row" id="cost-per-distance-row" hidden><dt>Cost per 100 km</dt><dd><strong id="cost-per-distance">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Total paid before tax</dt><dd><strong id="total-before-tax">--</strong></dd></div>
           <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Amount spent on energy</dt><dd><strong id="energy-spend">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Amount for energy before tax</dt><dd><strong id="energy-spend">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Effective energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
           <div class="breakdown-row" id="power-row" hidden><dt>Average charging power</dt><dd><strong id="average-power">--</strong></dd></div>
           <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
         </dl>
-        <p class="assumption">Estimate assumes the same tax rate applies to both the connection fee and the per-kWh rate.</p>
-        <p class="assumption">Cost per 100 km uses the total amount paid, including connection fee and tax.</p>
+        <p class="assumption">Tax is applied to the connection fee and the selected station energy price.</p>
+        <p class="assumption">Tax is removed from the total paid before calculating energy and cost per 100 km.</p>
       </section>
     </div>
   </main>
@@ -521,6 +635,13 @@
     const feeInput = document.querySelector("#connection-fee");
     const taxInput = document.querySelector("#tax-rate");
     const rateInput = document.querySelector("#price-per-kwh");
+    const hourlyRateInput = document.querySelector("#price-per-hour");
+    const stationCapacityInput = document.querySelector("#station-capacity");
+    const energyRateField = document.querySelector("#energy-rate-field");
+    const hourlyRateField = document.querySelector("#hourly-rate-field");
+    const powerAdjustmentInput = document.querySelector("#adjust-price-by-power");
+    const powerAdjustmentField = document.querySelector("#power-adjustment-field");
+    const stationCapacityField = document.querySelector("#station-capacity-field");
     const sessionInput = document.querySelector("#session-hours");
     const chargingPowerInput = document.querySelector("#charging-power");
     const efficiencyInput = document.querySelector("#vehicle-efficiency");
@@ -528,6 +649,7 @@
     const notice = document.querySelector("#notice");
     const result = document.querySelector("#energy-result");
     const resultMessage = document.querySelector("#result-message");
+    const totalBeforeTaxOutput = document.querySelector("#total-before-tax");
     const feeTotal = document.querySelector("#fee-total");
     const energySpend = document.querySelector("#energy-spend");
     const rateTotal = document.querySelector("#rate-total");
@@ -546,6 +668,14 @@
       minimumFractionDigits: 3,
       maximumFractionDigits: 4
     });
+
+    function syncPricingFields() {
+      const hourlyMode = form.elements["pricing-mode"].value === "hour";
+      energyRateField.hidden = hourlyMode;
+      hourlyRateField.hidden = !hourlyMode;
+      powerAdjustmentField.hidden = !hourlyMode;
+      stationCapacityField.hidden = !hourlyMode || !powerAdjustmentInput.checked;
+    }
 
     function setNotice(message) {
       notice.textContent = message;
@@ -576,26 +706,51 @@
 
     presetButtons.forEach((button) => {
       button.addEventListener("click", () => {
+        document.querySelector(`#pricing-mode-${button.dataset.pricingMode}`).checked = true;
+        if (button.dataset.powerAdjustment !== undefined) {
+          powerAdjustmentInput.checked = button.dataset.powerAdjustment === "true";
+        }
+        syncPricingFields();
         feeInput.value = button.dataset.connectionFee;
-        taxInput.value = button.dataset.taxRate;
-        rateInput.value = button.dataset.pricePerKwh;
-        chargingPowerInput.value = button.dataset.chargingPower;
+        if (button.dataset.taxRate !== undefined) {
+          taxInput.value = button.dataset.taxRate;
+        }
+        if (button.dataset.pricingMode === "hour") {
+          hourlyRateInput.value = button.dataset.pricePerHour;
+          stationCapacityInput.value = button.dataset.stationCapacity;
+        } else {
+          rateInput.value = button.dataset.pricePerKwh;
+        }
+        if (button.dataset.chargingPower !== undefined) {
+          chargingPowerInput.value = button.dataset.chargingPower;
+        }
       });
     });
+
+    document.querySelectorAll('input[name="pricing-mode"]').forEach((input) => {
+      input.addEventListener("change", syncPricingFields);
+    });
+    powerAdjustmentInput.addEventListener("change", syncPricingFields);
+    syncPricingFields();
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const total = Number(totalInput.value);
       const fee = Number(feeInput.value);
       const tax = Number(taxInput.value);
-      const rate = Number(rateInput.value);
+      const pricingMode = form.elements["pricing-mode"].value;
+      const rateText = pricingMode === "kwh" ? rateInput.value.trim() : hourlyRateInput.value.trim();
+      const rate = Number(pricingMode === "kwh" ? rateInput.value : hourlyRateInput.value);
+      const capacityText = stationCapacityInput.value.trim();
+      const stationCapacity = Number(stationCapacityInput.value);
+      const adjustPriceByPower = powerAdjustmentInput.checked;
       const sessionText = sessionInput.value.trim();
       const sessionProvided = sessionText !== "";
       const chargingPowerText = chargingPowerInput.value.trim();
       const chargingPower = Number(chargingPowerInput.value);
       const efficiencyText = efficiencyInput.value.trim();
       const efficiency = Number(efficiencyInput.value);
-      const inputs = [totalInput, feeInput, taxInput, rateInput];
+      const inputs = [totalInput, feeInput, taxInput];
 
       for (const input of inputs) {
         if (input.value.trim() === "" || !Number.isFinite(Number(input.value)) || Number(input.value) < 0) {
@@ -605,9 +760,17 @@
         }
       }
 
-      if (rate <= 0) {
-        setNotice("Cost per kilowatt-hour must be greater than zero.");
-        rateInput.focus();
+      if (rateText === "" || !Number.isFinite(rate) || rate <= 0) {
+        setNotice(pricingMode === "kwh"
+          ? "Cost per kilowatt-hour must be greater than zero."
+          : "Station price per hour must be greater than zero.");
+        (pricingMode === "kwh" ? rateInput : hourlyRateInput).focus();
+        return;
+      }
+
+      if (pricingMode === "hour" && adjustPriceByPower && (capacityText === "" || !Number.isFinite(stationCapacity) || stationCapacity <= 0)) {
+        setNotice("Station power capacity must be greater than zero.");
+        stationCapacityInput.focus();
         return;
       }
 
@@ -628,8 +791,12 @@
         }
       }
 
-      if (!sessionProvided && chargingPowerText !== "" && (!Number.isFinite(chargingPower) || chargingPower <= 0)) {
-        setNotice("Charging power per hour must be greater than zero, or leave it blank.");
+      const chargingPowerRequired = pricingMode === "hour" && !adjustPriceByPower;
+      if ((chargingPowerRequired && (chargingPowerText === "" || !Number.isFinite(chargingPower) || chargingPower <= 0)) ||
+        (!chargingPowerRequired && !sessionProvided && chargingPowerText !== "" && (!Number.isFinite(chargingPower) || chargingPower <= 0))) {
+        setNotice(chargingPowerRequired
+          ? "Average vehicle charging power must be greater than zero for fixed hourly pricing."
+          : "Average vehicle charging power must be greater than zero, or leave it blank.");
         chargingPowerInput.focus();
         return;
       }
@@ -641,9 +808,13 @@
       }
 
       const taxMultiplier = 1 + tax / 100;
+      const totalBeforeTax = total / taxMultiplier;
       const connectionFeeWithTax = fee * taxMultiplier;
-      const rateWithTax = rate * taxMultiplier;
-      const amountForEnergy = total - connectionFeeWithTax;
+      const energyRateBeforeTax = pricingMode === "kwh"
+        ? rate
+        : rate / (adjustPriceByPower ? stationCapacity : chargingPower);
+      const rateWithTax = energyRateBeforeTax * taxMultiplier;
+      const amountForEnergy = totalBeforeTax - fee;
 
       if (amountForEnergy < -0.005) {
         setNotice("The total paid is less than the connection fee including tax.");
@@ -651,11 +822,18 @@
         return;
       }
 
-      const kilowattHours = Math.max(0, amountForEnergy) / rateWithTax;
+      if (!Number.isFinite(rateWithTax) || rateWithTax <= 0) {
+        setNotice("The selected station price and power values do not produce a valid energy rate.");
+        return;
+      }
+
+      const preTaxEnergyAmount = Math.max(0, amountForEnergy);
+      const kilowattHours = preTaxEnergyAmount / energyRateBeforeTax;
       setNotice("");
       result.textContent = kilowattHours.toFixed(2);
+      totalBeforeTaxOutput.textContent = currency.format(totalBeforeTax);
       feeTotal.textContent = currency.format(connectionFeeWithTax);
-      energySpend.textContent = currency.format(Math.max(0, amountForEnergy));
+      energySpend.textContent = currency.format(preTaxEnergyAmount);
       rateTotal.textContent = `${unitCurrency.format(rateWithTax)} / kWh`;
       powerRow.hidden = true;
       durationEstimateRow.hidden = true;
@@ -665,7 +843,7 @@
         const estimatedRange = kilowattHours * efficiency;
         rangeEstimate.textContent = `${estimatedRange.toFixed(1)} km`;
         if (estimatedRange > 0) {
-          costPerDistance.textContent = currency.format((total / estimatedRange) * 100);
+          costPerDistance.textContent = currency.format((totalBeforeTax / estimatedRange) * 100);
         }
       }
       if (sessionProvided) {
