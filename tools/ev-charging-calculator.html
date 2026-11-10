@@ -124,6 +124,20 @@
       font-size: 0.8rem;
     }
 
+    .vehicle-section {
+      min-width: 0;
+      margin: 22px 0 0;
+      padding: 17px 0 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .vehicle-section legend {
+      padding: 0 10px 0 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
     .preset-picker {
       margin-bottom: 22px;
     }
@@ -368,6 +382,10 @@
         grid-column: 1 / -1;
       }
 
+      .vehicle-section .field:first-child {
+        grid-column: auto;
+      }
+
       .calculate-button {
         width: auto;
         min-width: 190px;
@@ -445,7 +463,11 @@
                 <input id="session-hours" name="session-hours" type="text" inputmode="text" maxlength="8" autocomplete="off" spellcheck="false" aria-describedby="session-note" placeholder="HH:mm:ss">
               </div>
             </div>
+          </div>
 
+          <fieldset class="vehicle-section">
+            <legend>Vehicle estimates</legend>
+            <div class="fields">
             <div class="field">
               <label for="charging-power">Charging power per hour</label>
               <p class="field-note" id="charging-power-note">Used only when session duration is blank</p>
@@ -454,7 +476,17 @@
                 <span class="input-suffix" aria-hidden="true">kW</span>
               </div>
             </div>
-          </div>
+
+            <div class="field">
+              <label for="vehicle-efficiency">Vehicle efficiency</label>
+              <p class="field-note" id="efficiency-note">Optional; distance per unit of energy</p>
+              <div class="input-wrap">
+                <input id="vehicle-efficiency" name="vehicle-efficiency" type="number" min="0" step="any" inputmode="decimal" value="4" aria-describedby="efficiency-note">
+                <span class="input-suffix" aria-hidden="true">km/kWh</span>
+              </div>
+            </div>
+            </div>
+          </fieldset>
 
           <p class="notice" id="notice" role="alert"></p>
           <button class="calculate-button" type="submit">Calculate energy</button>
@@ -469,6 +501,8 @@
         <p class="message" id="result-message">Enter your receipt total to get started.</p>
 
         <dl class="breakdown" aria-label="Cost breakdown">
+          <div class="breakdown-row" id="range-row" hidden><dt>Estimated driving range</dt><dd><strong id="range-estimate">--</strong></dd></div>
+          <div class="breakdown-row" id="cost-per-distance-row" hidden><dt>Cost per 100 km</dt><dd><strong id="cost-per-distance">--</strong></dd></div>
           <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
           <div class="breakdown-row"><dt>Amount spent on energy</dt><dd><strong id="energy-spend">--</strong></dd></div>
           <div class="breakdown-row"><dt>Energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
@@ -476,6 +510,7 @@
           <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
         </dl>
         <p class="assumption">Estimate assumes the same tax rate applies to both the connection fee and the per-kWh rate.</p>
+        <p class="assumption">Cost per 100 km uses the total amount paid, including connection fee and tax.</p>
       </section>
     </div>
   </main>
@@ -488,6 +523,7 @@
     const rateInput = document.querySelector("#price-per-kwh");
     const sessionInput = document.querySelector("#session-hours");
     const chargingPowerInput = document.querySelector("#charging-power");
+    const efficiencyInput = document.querySelector("#vehicle-efficiency");
     const presetButtons = document.querySelectorAll("[data-preset]");
     const notice = document.querySelector("#notice");
     const result = document.querySelector("#energy-result");
@@ -499,6 +535,10 @@
     const averagePower = document.querySelector("#average-power");
     const durationEstimateRow = document.querySelector("#duration-estimate-row");
     const durationEstimate = document.querySelector("#duration-estimate");
+    const rangeRow = document.querySelector("#range-row");
+    const rangeEstimate = document.querySelector("#range-estimate");
+    const costPerDistanceRow = document.querySelector("#cost-per-distance-row");
+    const costPerDistance = document.querySelector("#cost-per-distance");
     const currency = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" });
     const unitCurrency = new Intl.NumberFormat(undefined, {
       style: "currency",
@@ -515,8 +555,12 @@
       if (message) {
         powerRow.hidden = true;
         durationEstimateRow.hidden = true;
+        rangeRow.hidden = true;
+        costPerDistanceRow.hidden = true;
         averagePower.textContent = "--";
         durationEstimate.textContent = "--";
+        rangeEstimate.textContent = "--";
+        costPerDistance.textContent = "--";
       }
       resultMessage.textContent = message ? "Check the amounts and try again." : "Estimate updated.";
       resultMessage.classList.toggle("error", Boolean(message));
@@ -549,6 +593,8 @@
       const sessionProvided = sessionText !== "";
       const chargingPowerText = chargingPowerInput.value.trim();
       const chargingPower = Number(chargingPowerInput.value);
+      const efficiencyText = efficiencyInput.value.trim();
+      const efficiency = Number(efficiencyInput.value);
       const inputs = [totalInput, feeInput, taxInput, rateInput];
 
       for (const input of inputs) {
@@ -588,6 +634,12 @@
         return;
       }
 
+      if (efficiencyText !== "" && (!Number.isFinite(efficiency) || efficiency <= 0)) {
+        setNotice("Vehicle efficiency must be greater than zero, or leave it blank.");
+        efficiencyInput.focus();
+        return;
+      }
+
       const taxMultiplier = 1 + tax / 100;
       const connectionFeeWithTax = fee * taxMultiplier;
       const rateWithTax = rate * taxMultiplier;
@@ -607,6 +659,15 @@
       rateTotal.textContent = `${unitCurrency.format(rateWithTax)} / kWh`;
       powerRow.hidden = true;
       durationEstimateRow.hidden = true;
+      rangeRow.hidden = efficiencyText === "";
+      costPerDistanceRow.hidden = efficiencyText === "" || kilowattHours * efficiency <= 0;
+      if (efficiencyText !== "") {
+        const estimatedRange = kilowattHours * efficiency;
+        rangeEstimate.textContent = `${estimatedRange.toFixed(1)} km`;
+        if (estimatedRange > 0) {
+          costPerDistance.textContent = currency.format((total / estimatedRange) * 100);
+        }
+      }
       if (sessionProvided) {
         powerRow.hidden = false;
         averagePower.textContent = `${(kilowattHours / sessionHours).toFixed(2)} kW`;
