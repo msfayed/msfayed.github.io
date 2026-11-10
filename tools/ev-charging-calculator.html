@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f6f1">
+  <title>EV Charge Cost Calculator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172522;
+      --muted: #62706b;
+      --line: #d7dfd9;
+      --paper: #ffffff;
+      --canvas: #f2f6f1;
+      --green: #176957;
+      --green-dark: #124d42;
+      --lime: #d5ef75;
+      --coral: #b9412a;
+      --soft-coral: #fff0ec;
+      font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background: var(--canvas);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      width: min(100% - 32px, 1040px);
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .topline-mark {
+      display: inline-grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--lime);
+      color: var(--green-dark);
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(2.15rem, 8vw, 4.25rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      max-width: 610px;
+      margin: 16px 0 30px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .workspace {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: 22px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    .panel h2 {
+      margin: 0 0 20px;
+      font-size: 1.15rem;
+      line-height: 1.3;
+    }
+
+    .fields {
+      display: grid;
+      gap: 17px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .field-note {
+      margin: -2px 0 7px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .preset-picker {
+      margin-bottom: 22px;
+    }
+
+    .preset-picker-label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .preset-button {
+      min-width: 0;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid #aebbb4;
+      border-radius: 5px;
+      background: var(--paper);
+      color: var(--green-dark);
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .preset-button:hover {
+      border-color: var(--green);
+      background: #edf5ef;
+    }
+
+    .preset-button:focus-visible {
+      outline: 3px solid rgb(23 105 87 / 30%);
+      outline-offset: 2px;
+    }
+
+    .input-wrap {
+      display: flex;
+      min-height: 50px;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid #aebbb4;
+      border-radius: 5px;
+      background: var(--paper);
+    }
+
+    .input-wrap:focus-within {
+      border-color: var(--green);
+      outline: 3px solid rgb(23 105 87 / 18%);
+    }
+
+    .input-prefix,
+    .input-suffix {
+      flex: 0 0 auto;
+      padding: 0 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 10px 12px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    input::placeholder {
+      color: #89958f;
+    }
+
+    .input-wrap input:first-child {
+      padding-left: 14px;
+    }
+
+    .input-wrap:has(.input-prefix) input {
+      padding-left: 0;
+    }
+
+    .calculate-button {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 21px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 5px;
+      background: var(--green);
+      color: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: background-color 140ms ease, transform 140ms ease;
+    }
+
+    .calculate-button:hover {
+      background: var(--green-dark);
+    }
+
+    .calculate-button:active {
+      transform: translateY(1px);
+    }
+
+    .calculate-button:focus-visible {
+      outline: 3px solid var(--lime);
+      outline-offset: 3px;
+    }
+
+    .result-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      border-color: var(--green-dark);
+      background: var(--green-dark);
+      color: #fff;
+    }
+
+    .result-panel h2 {
+      color: #d9e8e1;
+    }
+
+    .result-label {
+      margin: 3px 0 3px;
+      color: #d9e8e1;
+      font-size: 0.9rem;
+    }
+
+    .result-value {
+      overflow-wrap: anywhere;
+      color: var(--lime);
+      font-size: clamp(2.7rem, 15vw, 5rem);
+      font-weight: 700;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .result-unit {
+      margin: 9px 0 0;
+      color: #d9e8e1;
+      font-size: 1rem;
+    }
+
+    .message {
+      min-height: 1.4em;
+      margin: 17px 0 0;
+      color: #f5d47a;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .message.error {
+      color: #ffd2c9;
+    }
+
+    .breakdown {
+      display: grid;
+      gap: 0;
+      margin: auto 0 0;
+      padding: 25px 0 0;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-top: 1px solid rgb(255 255 255 / 20%);
+      color: #d9e8e1;
+      font-size: 0.88rem;
+    }
+
+    .breakdown-row[hidden] {
+      display: none;
+    }
+
+    .breakdown-row strong {
+      color: #fff;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .assumption {
+      margin: 18px 0 0;
+      color: #d9e8e1;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .notice {
+      display: none;
+      margin: 15px 0 0;
+      padding: 11px 12px;
+      border-radius: 5px;
+      background: var(--soft-coral);
+      color: var(--coral);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .notice.visible {
+      display: block;
+    }
+
+    @media (min-width: 720px) {
+      .page {
+        width: min(100% - 56px, 1040px);
+        padding-top: 42px;
+      }
+
+      .topline {
+        margin-bottom: 38px;
+      }
+
+      .intro {
+        margin-bottom: 38px;
+      }
+
+      .workspace {
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        align-items: stretch;
+        gap: 22px;
+      }
+
+      .panel {
+        padding: 28px;
+      }
+
+      .fields {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px 16px;
+      }
+
+      .field:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .calculate-button {
+        width: auto;
+        min-width: 190px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topline"><span class="topline-mark" aria-hidden="true">e</span> EV charging estimate</div>
+    <h1>How much energy did your stop buy?</h1>
+    <p class="intro">Enter the amount you paid and the station's rates to estimate the energy delivered to your vehicle.</p>
+
+    <div class="workspace">
+      <section class="panel" aria-labelledby="inputs-heading">
+        <h2 id="inputs-heading">Station receipt</h2>
+        <form id="calculator" novalidate>
+          <div class="preset-picker" role="group" aria-label="Station presets">
+            <span class="preset-picker-label">Sample station</span>
+            <div class="preset-buttons">
+              <button class="preset-button" id="delridge-preset" type="button" data-preset data-connection-fee="0" data-tax-rate="0" data-price-per-kwh="0.19" data-charging-power="3.0">Delridge</button>
+              <button class="preset-button" id="royal-towers-preset" type="button" data-preset data-connection-fee="0.75" data-tax-rate="14" data-price-per-kwh="0.25" data-charging-power="3.0">Royal Towers</button>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="field">
+              <label for="total-paid">Total paid</label>
+              <p class="field-note" id="total-note">The full amount charged, including tax</p>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">$</span>
+                <input id="total-paid" name="total-paid" type="number" min="0" step="any" inputmode="decimal" placeholder="0.00" aria-describedby="total-note" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="connection-fee">Connection fee</label>
+              <p class="field-note" id="fee-note">Before tax</p>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">$</span>
+                <input id="connection-fee" name="connection-fee" type="number" min="0" step="any" inputmode="decimal" value="0.75" aria-describedby="fee-note" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="tax-rate">Tax rate</label>
+              <p class="field-note" id="tax-note">Applied to the fee and energy rate</p>
+              <div class="input-wrap">
+                <input id="tax-rate" name="tax-rate" type="number" min="0" step="any" inputmode="decimal" value="14" aria-describedby="tax-note" required>
+                <span class="input-suffix" aria-hidden="true">%</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="price-per-kwh">Cost per kilowatt-hour</label>
+              <p class="field-note" id="price-note">Before tax</p>
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">$</span>
+                <input id="price-per-kwh" name="price-per-kwh" type="number" min="0" step="any" inputmode="decimal" value="0.25" aria-describedby="price-note" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="session-hours">Session duration</label>
+              <p class="field-note" id="session-note">Optional; use HH:mm:ss (for example, 01:30:00)</p>
+              <div class="input-wrap">
+                <input id="session-hours" name="session-hours" type="text" inputmode="text" maxlength="8" autocomplete="off" spellcheck="false" aria-describedby="session-note" placeholder="HH:mm:ss">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="charging-power">Charging power per hour</label>
+              <p class="field-note" id="charging-power-note">Used only when session duration is blank</p>
+              <div class="input-wrap">
+                <input id="charging-power" name="charging-power" type="number" min="0" step="any" inputmode="decimal" value="3.0" aria-describedby="charging-power-note">
+                <span class="input-suffix" aria-hidden="true">kW</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="notice" id="notice" role="alert"></p>
+          <button class="calculate-button" type="submit">Calculate energy</button>
+        </form>
+      </section>
+
+      <section class="panel result-panel" aria-labelledby="result-heading" aria-live="polite" aria-atomic="true">
+        <h2 id="result-heading">Your estimate</h2>
+        <p class="result-label">Estimated energy delivered</p>
+        <output class="result-value" id="energy-result" for="total-paid connection-fee tax-rate price-per-kwh">--</output>
+        <p class="result-unit">kilowatt-hours (kWh)</p>
+        <p class="message" id="result-message">Enter your receipt total to get started.</p>
+
+        <dl class="breakdown" aria-label="Cost breakdown">
+          <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Amount spent on energy</dt><dd><strong id="energy-spend">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
+          <div class="breakdown-row" id="power-row" hidden><dt>Average charging power</dt><dd><strong id="average-power">--</strong></dd></div>
+          <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
+        </dl>
+        <p class="assumption">Estimate assumes the same tax rate applies to both the connection fee and the per-kWh rate.</p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const form = document.querySelector("#calculator");
+    const totalInput = document.querySelector("#total-paid");
+    const feeInput = document.querySelector("#connection-fee");
+    const taxInput = document.querySelector("#tax-rate");
+    const rateInput = document.querySelector("#price-per-kwh");
+    const sessionInput = document.querySelector("#session-hours");
+    const chargingPowerInput = document.querySelector("#charging-power");
+    const presetButtons = document.querySelectorAll("[data-preset]");
+    const notice = document.querySelector("#notice");
+    const result = document.querySelector("#energy-result");
+    const resultMessage = document.querySelector("#result-message");
+    const feeTotal = document.querySelector("#fee-total");
+    const energySpend = document.querySelector("#energy-spend");
+    const rateTotal = document.querySelector("#rate-total");
+    const powerRow = document.querySelector("#power-row");
+    const averagePower = document.querySelector("#average-power");
+    const durationEstimateRow = document.querySelector("#duration-estimate-row");
+    const durationEstimate = document.querySelector("#duration-estimate");
+    const currency = new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" });
+    const unitCurrency = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 3,
+      maximumFractionDigits: 4
+    });
+
+    function setNotice(message) {
+      notice.textContent = message;
+      notice.classList.toggle("visible", Boolean(message));
+      result.classList.toggle("error", Boolean(message));
+      result.textContent = message ? "--" : result.textContent;
+      if (message) {
+        powerRow.hidden = true;
+        durationEstimateRow.hidden = true;
+        averagePower.textContent = "--";
+        durationEstimate.textContent = "--";
+      }
+      resultMessage.textContent = message ? "Check the amounts and try again." : "Estimate updated.";
+      resultMessage.classList.toggle("error", Boolean(message));
+    }
+
+    function formatDuration(totalSeconds) {
+      const roundedSeconds = Math.max(0, Math.round(totalSeconds));
+      const hours = Math.floor(roundedSeconds / 3600);
+      const minutes = Math.floor((roundedSeconds % 3600) / 60);
+      const seconds = roundedSeconds % 60;
+      return [hours, minutes, seconds].map((part) => String(part).padStart(2, "0")).join(":");
+    }
+
+    presetButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        feeInput.value = button.dataset.connectionFee;
+        taxInput.value = button.dataset.taxRate;
+        rateInput.value = button.dataset.pricePerKwh;
+        chargingPowerInput.value = button.dataset.chargingPower;
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const total = Number(totalInput.value);
+      const fee = Number(feeInput.value);
+      const tax = Number(taxInput.value);
+      const rate = Number(rateInput.value);
+      const sessionText = sessionInput.value.trim();
+      const sessionProvided = sessionText !== "";
+      const chargingPowerText = chargingPowerInput.value.trim();
+      const chargingPower = Number(chargingPowerInput.value);
+      const inputs = [totalInput, feeInput, taxInput, rateInput];
+
+      for (const input of inputs) {
+        if (input.value.trim() === "" || !Number.isFinite(Number(input.value)) || Number(input.value) < 0) {
+          setNotice("Enter a valid, non-negative value in every field.");
+          input.focus();
+          return;
+        }
+      }
+
+      if (rate <= 0) {
+        setNotice("Cost per kilowatt-hour must be greater than zero.");
+        rateInput.focus();
+        return;
+      }
+
+      let sessionHours = 0;
+      if (sessionProvided) {
+        const durationParts = sessionText.match(/^(\d{2}):([0-5]\d):([0-5]\d)$/);
+        if (!durationParts) {
+          setNotice("Enter session duration as HH:mm:ss, or leave it blank.");
+          sessionInput.focus();
+          return;
+        }
+
+        sessionHours = Number(durationParts[1]) + Number(durationParts[2]) / 60 + Number(durationParts[3]) / 3600;
+        if (sessionHours === 0) {
+          setNotice("Session duration must be greater than 00:00:00.");
+          sessionInput.focus();
+          return;
+        }
+      }
+
+      if (!sessionProvided && chargingPowerText !== "" && (!Number.isFinite(chargingPower) || chargingPower <= 0)) {
+        setNotice("Charging power per hour must be greater than zero, or leave it blank.");
+        chargingPowerInput.focus();
+        return;
+      }
+
+      const taxMultiplier = 1 + tax / 100;
+      const connectionFeeWithTax = fee * taxMultiplier;
+      const rateWithTax = rate * taxMultiplier;
+      const amountForEnergy = total - connectionFeeWithTax;
+
+      if (amountForEnergy < -0.005) {
+        setNotice("The total paid is less than the connection fee including tax.");
+        totalInput.focus();
+        return;
+      }
+
+      const kilowattHours = Math.max(0, amountForEnergy) / rateWithTax;
+      setNotice("");
+      result.textContent = kilowattHours.toFixed(2);
+      feeTotal.textContent = currency.format(connectionFeeWithTax);
+      energySpend.textContent = currency.format(Math.max(0, amountForEnergy));
+      rateTotal.textContent = `${unitCurrency.format(rateWithTax)} / kWh`;
+      powerRow.hidden = true;
+      durationEstimateRow.hidden = true;
+      if (sessionProvided) {
+        powerRow.hidden = false;
+        averagePower.textContent = `${(kilowattHours / sessionHours).toFixed(2)} kW`;
+      } else if (chargingPowerText !== "") {
+        durationEstimateRow.hidden = false;
+        durationEstimate.textContent = formatDuration((kilowattHours / chargingPower) * 3600);
+      }
+    });
+  </script>
+</body>
+</html>

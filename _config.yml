@@ -36,3 +36,6 @@ plugins:
 # - jekyll-paginate
 # - jekyll-readme-index
 # - jekyll-titles-from-headings
+
+exclude:
+  - tools/
