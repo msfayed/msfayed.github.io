@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f2f6f1">
+  <meta name="theme-color" content="#f5f4f0">
   <title>EV Charge Cost Calculator</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #172522;
-      --muted: #62706b;
-      --line: #d7dfd9;
-      --paper: #ffffff;
-      --canvas: #f2f6f1;
-      --green: #176957;
-      --green-dark: #124d42;
-      --lime: #d5ef75;
+      --ink: #20242b;
+      --muted: #59636f;
+      --line: #e0e3e8;
+      --paper: #fff;
+      --canvas: #f5f4f0;
+      --accent: #3559e8;
+      --accent-strong: #2343c7;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --coral: #b9412a;
       --soft-coral: #fff0ec;
-      font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
+      font-family: var(--font);
       color: var(--ink);
       background: var(--canvas);
       font-synthesis: none;
@@ -64,8 +64,8 @@
       height: 30px;
       place-items: center;
       border-radius: 50%;
-      background: var(--lime);
-      color: var(--green-dark);
+      background: #edf0ff;
+      color: var(--accent-strong);
       font-size: 1rem;
       letter-spacing: 0;
     }
@@ -96,8 +96,9 @@
       min-width: 0;
       padding: 22px 18px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 14px;
       background: var(--paper);
+      box-shadow: 0 8px 26px rgb(26 35 54 / 5%);
     }
 
     .panel h2 {
@@ -141,7 +142,7 @@
       min-height: 18px;
       margin: 0;
       padding: 0;
-      accent-color: var(--green);
+      accent-color: var(--accent);
     }
 
     .vehicle-section {
@@ -187,8 +188,8 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 4px;
       padding: 4px;
-      border-radius: 6px;
-      background: #e9efea;
+      border-radius: 9px;
+      background: #f0f1f5;
     }
 
     .mode-option {
@@ -199,7 +200,7 @@
       justify-content: center;
       gap: 8px;
       padding: 8px;
-      border-radius: 4px;
+      border-radius: 7px;
       color: var(--muted);
       cursor: pointer;
       font-size: 0.88rem;
@@ -209,7 +210,7 @@
 
     .mode-option:has(input:checked) {
       background: var(--paper);
-      color: var(--green-dark);
+      color: var(--accent-strong);
     }
 
     .mode-option input[type="radio"] {
@@ -217,7 +218,7 @@
       min-width: 16px;
       min-height: 16px;
       padding: 0;
-      accent-color: var(--green);
+      accent-color: var(--accent);
     }
 
     .preset-buttons {
@@ -230,22 +231,22 @@
       min-width: 0;
       min-height: 46px;
       padding: 10px 12px;
-      border: 1px solid #aebbb4;
-      border-radius: 5px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
       background: var(--paper);
-      color: var(--green-dark);
+      color: var(--accent-strong);
       cursor: pointer;
       font-size: 0.92rem;
       font-weight: 700;
     }
 
     .preset-button:hover {
-      border-color: var(--green);
-      background: #edf5ef;
+      border-color: var(--accent);
+      background: #f1f3ff;
     }
 
     .preset-button:focus-visible {
-      outline: 3px solid rgb(23 105 87 / 30%);
+      outline: 3px solid rgb(53 89 232 / 35%);
       outline-offset: 2px;
     }
 
@@ -254,14 +255,14 @@
       min-height: 50px;
       align-items: center;
       overflow: hidden;
-      border: 1px solid #aebbb4;
-      border-radius: 5px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
       background: var(--paper);
     }
 
     .input-wrap:focus-within {
-      border-color: var(--green);
-      outline: 3px solid rgb(23 105 87 / 18%);
+      border-color: var(--accent);
+      outline: 3px solid rgb(53 89 232 / 18%);
     }
 
     .input-prefix,
@@ -286,7 +287,7 @@
     }
 
     input::placeholder {
-      color: #89958f;
+      color: var(--muted);
     }
 
     .input-wrap input:first-child {
@@ -303,8 +304,8 @@
       margin-top: 21px;
       padding: 12px 18px;
       border: 0;
-      border-radius: 5px;
-      background: var(--green);
+      border-radius: 9px;
+      background: var(--accent);
       color: #fff;
       cursor: pointer;
       font-size: 1rem;
@@ -313,7 +314,7 @@
     }
 
     .calculate-button:hover {
-      background: var(--green-dark);
+      background: var(--accent-strong);
     }
 
     .calculate-button:active {
@@ -321,7 +322,7 @@
     }
 
     .calculate-button:focus-visible {
-      outline: 3px solid var(--lime);
+      outline: 3px solid var(--accent);
       outline-offset: 3px;
     }
 
@@ -329,24 +330,24 @@
       display: flex;
       flex-direction: column;
       min-height: 100%;
-      border-color: var(--green-dark);
-      background: var(--green-dark);
-      color: #fff;
+      border-color: var(--line);
+      background: var(--paper);
+      color: var(--ink);
     }
 
     .result-panel h2 {
-      color: #d9e8e1;
+      color: var(--ink);
     }
 
     .result-label {
       margin: 3px 0 3px;
-      color: #d9e8e1;
+      color: var(--muted);
       font-size: 0.9rem;
     }
 
     .result-value {
       overflow-wrap: anywhere;
-      color: var(--lime);
+      color: var(--accent-strong);
       font-size: clamp(2.7rem, 15vw, 5rem);
       font-weight: 700;
       line-height: 1;
@@ -355,20 +356,20 @@
 
     .result-unit {
       margin: 9px 0 0;
-      color: #d9e8e1;
+      color: var(--muted);
       font-size: 1rem;
     }
 
     .message {
       min-height: 1.4em;
       margin: 17px 0 0;
-      color: #f5d47a;
+      color: var(--muted);
       font-size: 0.9rem;
       line-height: 1.45;
     }
 
     .message.error {
-      color: #ffd2c9;
+      color: var(--coral);
     }
 
     .breakdown {
@@ -383,8 +384,8 @@
       justify-content: space-between;
       gap: 16px;
       padding: 12px 0;
-      border-top: 1px solid rgb(255 255 255 / 20%);
-      color: #d9e8e1;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
       font-size: 0.88rem;
     }
 
@@ -393,14 +394,14 @@
     }
 
     .breakdown-row strong {
-      color: #fff;
+      color: var(--ink);
       text-align: right;
       font-variant-numeric: tabular-nums;
     }
 
     .assumption {
       margin: 18px 0 0;
-      color: #d9e8e1;
+      color: var(--muted);
       font-size: 0.78rem;
       line-height: 1.5;
     }
@@ -409,7 +410,7 @@
       display: none;
       margin: 15px 0 0;
       padding: 11px 12px;
-      border-radius: 5px;
+      border-radius: 9px;
       background: var(--soft-coral);
       color: var(--coral);
       font-size: 0.88rem;

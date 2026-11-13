@@ -1,15 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Tools</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <title>Web Tools</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20242b;
+      --muted: #59636f;
+      --line: #e0e3e8;
+      --paper: #fff;
+      --canvas: #f5f4f0;
+      --accent: #3559e8;
+      --accent-strong: #2343c7;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--canvas);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .page {
+      width: min(100% - 32px, 760px);
+      margin: 0 auto;
+      padding: 48px 0 56px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 3.25rem);
+      line-height: 1.08;
+      letter-spacing: -0.055em;
+    }
+
+    .intro {
+      max-width: 520px;
+      margin: 14px 0 30px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tool-link {
+      display: grid;
+      min-height: 92px;
+      grid-template-columns: 48px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 15px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 5px 18px rgb(26 35 54 / 4%);
+      transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+    }
+
+    .tool-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 9px 24px rgb(26 35 54 / 8%);
+    }
+
+    .tool-link:focus-visible {
+      outline: 3px solid rgb(53 89 232 / 35%);
+      outline-offset: 3px;
+    }
+
+    .tool-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 13px;
+      background: #edf0ff;
+      color: var(--accent-strong);
+      font-size: 1.35rem;
+    }
+
+    .tool-copy { min-width: 0; }
+
+    .tool-title {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .tool-description {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.91rem;
+      line-height: 1.45;
+    }
+
+    .tool-arrow {
+      justify-self: end;
+      color: #79828d;
+      font-size: 1.25rem;
+      transition: transform 140ms ease;
+    }
+
+    .tool-link:hover .tool-arrow { transform: translateX(3px); }
+
+    @media (max-width: 420px) {
+      .page { padding-top: 34px; }
+      .intro { margin-bottom: 24px; }
+      .tool-link {
+        min-height: 84px;
+        grid-template-columns: 42px minmax(0, 1fr) 18px;
+        gap: 12px;
+        padding: 14px;
+      }
+      .tool-icon {
+        width: 42px;
+        height: 42px;
+      }
+      .tool-description { font-size: 0.88rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>My Custom Web Tools</h1>
-    <ul>
-        <li><a href="/tools/ev-charging-calculator.html">EV Charging Calculator</a></li>
-        <li><a href="/tools/name-wheel.html">Name Wheel</a></li>
-    </ul>
+  <main class="page">
+    <p class="eyebrow">Quick and useful</p>
+    <h1>Web tools</h1>
+    <p class="intro">Simple tools for everyday decisions and calculations. Choose one to get started.</p>
+
+    <nav aria-label="Available tools">
+      <ul class="tool-list">
+        <li>
+          <a class="tool-link" href="ev-charging-calculator.html">
+            <span class="tool-icon" aria-hidden="true">⚡</span>
+            <span class="tool-copy">
+              <span class="tool-title">EV Charging Calculator</span>
+              <span class="tool-description">Estimate the cost of charging an electric vehicle.</span>
+            </span>
+            <span class="tool-arrow" aria-hidden="true">›</span>
+          </a>
+        </li>
+        <li>
+          <a class="tool-link" href="name-wheel.html">
+            <span class="tool-icon" aria-hidden="true">✳</span>
+            <span class="tool-copy">
+              <span class="tool-title">Name Wheel</span>
+              <span class="tool-description">Add choices and spin to pick one at random.</span>
+            </span>
+            <span class="tool-arrow" aria-hidden="true">›</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </main>
 </body>
 </html>
