@@ -218,6 +218,22 @@
       accent-color: var(--accent);
     }
 
+    .options input[type="number"] {
+      width: 68px;
+      height: auto;
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .options input[type="number"]:focus-visible {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgb(53 89 232 / 15%);
+    }
+
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -292,6 +308,7 @@
 
     .winner-name {
       overflow-wrap: anywhere;
+      white-space: pre-line;
       margin: 0 0 22px;
       font-size: clamp(1.7rem, 8vw, 2.45rem);
       font-weight: 850;
@@ -355,6 +372,10 @@
           <input id="remove-winner" type="checkbox">
           Remove the result after each spin
         </label>
+        <label class="options">
+          <input id="pick-count" type="number" min="1" step="1" value="1" inputmode="numeric">
+          Number of items to pick per spin
+        </label>
         <div class="actions">
           <button class="action-button" id="shuffle" type="button">Shuffle entries</button>
           <button class="action-button" id="sort" type="button">Sort A–Z</button>
@@ -386,6 +407,8 @@
       const message = document.getElementById("message");
       const overlay = document.getElementById("result-overlay");
       const winnerLabel = document.getElementById("winner-name");
+      const resultTitle = document.getElementById("result-title");
+      const pickCountField = document.getElementById("pick-count");
       const maxEntries = 200;
       let rotation = 0;
       let spinning = false;
@@ -402,6 +425,11 @@
         message.classList.toggle("error", isError);
       }
 
+      function getPickCount() {
+        const value = Math.floor(Number(pickCountField.value));
+        return Number.isFinite(value) && value >= 1 ? value : 1;
+      }
+
       function updateControls() {
         const entries = getEntries();
         const tooMany = entries.length > maxEntries;
@@ -412,6 +440,7 @@
         document.getElementById("clear").disabled = spinning || entries.length === 0;
         entriesField.disabled = spinning;
         document.getElementById("remove-winner").disabled = spinning;
+        pickCountField.disabled = spinning;
         if (tooMany) {
           setMessage(`Use ${maxEntries} entries or fewer to keep the wheel readable.`, true);
         } else if (entries.length < 2) {
@@ -508,55 +537,85 @@
         return Math.random();
       }
 
-      function finishSpin(entries, winnerIndex) {
+      function finishSpin(winners) {
         spinning = false;
         updateControls();
-        winnerLabel.textContent = entries[winnerIndex];
+        resultTitle.textContent = winners.length === 1 ? "The wheel picked" : `The wheel picked ${winners.length} items`;
+        winnerLabel.textContent = winners.join("\n");
         overlay.hidden = false;
         document.getElementById("close-result").focus();
         if (document.getElementById("remove-winner").checked) {
-          entries.splice(winnerIndex, 1);
-          entriesField.value = entries.join("\n");
+          const remaining = getEntries();
+          winners.forEach((winner) => {
+            const index = remaining.indexOf(winner);
+            if (index !== -1) remaining.splice(index, 1);
+          });
+          entriesField.value = remaining.join("\n");
           updateControls();
-          setMessage(entries.length ? "The result was removed from your entries." : "That was the last entry. Add more to spin again.");
+          if (remaining.length) {
+            setMessage(winners.length === 1 ? "The result was removed from your entries." : "The results were removed from your entries.");
+          } else {
+            setMessage(winners.length === 1 ? "That was the last entry. Add more to spin again." : "Those were the last entries. Add more to spin again.");
+          }
         }
       }
 
       function spin() {
         const entries = getEntries();
         if (spinning || entries.length < 2 || entries.length > maxEntries) return;
+        const pickCount = getPickCount();
+        if (pickCount >= entries.length) {
+          setMessage(`Pick fewer items than your ${entries.length} entries.`, true);
+          pickCountField.focus();
+          return;
+        }
         spinning = true;
-        setMessage("The wheel is spinning…");
         updateControls();
 
-        const winnerIndex = Math.floor(randomUnit() * entries.length);
-        const slice = (Math.PI * 2) / entries.length;
-        const desiredRotation = ((-(winnerIndex + 0.5) * slice) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-        const currentRotation = ((rotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-        const extra = (5 + Math.floor(randomUnit() * 3)) * Math.PI * 2;
-        const distance = extra + ((desiredRotation - currentRotation + Math.PI * 2) % (Math.PI * 2));
-        const startRotation = rotation;
-        const targetRotation = rotation + distance;
-        const duration = 4600;
-        const startTime = performance.now();
+        const winners = [];
+        const remaining = entries.slice();
 
-        function animate(now) {
-          const progress = Math.min(1, (now - startTime) / duration);
-          const eased = 1 - Math.pow(1 - progress, 4);
-          rotation = startRotation + distance * eased;
-          drawWheel(entries);
-          if (progress < 1) {
-            animationFrame = requestAnimationFrame(animate);
-          } else {
-            rotation = targetRotation;
-            drawWheel(entries);
-            finishSpin(entries, winnerIndex);
+        function spinRound() {
+          setMessage(pickCount === 1 ? "The wheel is spinning…" : `The wheel is spinning… picking ${winners.length + 1} of ${pickCount}.`);
+          const winnerIndex = Math.floor(randomUnit() * remaining.length);
+          const slice = (Math.PI * 2) / remaining.length;
+          const desiredRotation = ((-(winnerIndex + 0.5) * slice) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+          const currentRotation = ((rotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+          const extra = (5 + Math.floor(randomUnit() * 3)) * Math.PI * 2;
+          const distance = extra + ((desiredRotation - currentRotation + Math.PI * 2) % (Math.PI * 2));
+          const startRotation = rotation;
+          const targetRotation = rotation + distance;
+          const duration = winners.length === 0 ? 4600 : 2600;
+          const startTime = performance.now();
+
+          function animate(now) {
+            const progress = Math.min(1, (now - startTime) / duration);
+            const eased = 1 - Math.pow(1 - progress, 4);
+            rotation = startRotation + distance * eased;
+            drawWheel(remaining);
+            if (progress < 1) {
+              animationFrame = requestAnimationFrame(animate);
+            } else {
+              rotation = targetRotation;
+              drawWheel(remaining);
+              winners.push(remaining[winnerIndex]);
+              remaining.splice(winnerIndex, 1);
+              if (winners.length < pickCount) {
+                setTimeout(spinRound, 650);
+              } else {
+                finishSpin(winners);
+              }
+            }
           }
+          animationFrame = requestAnimationFrame(animate);
         }
-        animationFrame = requestAnimationFrame(animate);
+        spinRound();
       }
 
       entriesField.addEventListener("input", updateControls);
+      pickCountField.addEventListener("input", () => {
+        if (message.classList.contains("error")) setMessage("");
+      });
       spinButton.addEventListener("click", spin);
       window.addEventListener("resize", resizeCanvas);
       document.getElementById("shuffle").addEventListener("click", () => {
