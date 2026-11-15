@@ -145,18 +145,47 @@
       accent-color: var(--accent);
     }
 
-    .vehicle-section {
+    .collapsible-section {
       min-width: 0;
-      margin: 22px 0 0;
-      padding: 17px 0 0;
-      border: 0;
+      margin: 0;
       border-top: 1px solid var(--line);
     }
 
-    .vehicle-section legend {
-      padding: 0 10px 0 0;
+    .collapsible-section summary {
+      display: flex;
+      min-height: 52px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
       font-size: 1rem;
       font-weight: 700;
+      list-style: none;
+    }
+
+    .collapsible-section summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .collapsible-section summary::after {
+      content: "+";
+      color: var(--accent-strong);
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .collapsible-section[open] summary::after {
+      content: "−";
+    }
+
+    .collapsible-section summary:focus-visible {
+      outline: 3px solid rgb(53 89 232 / 35%);
+      outline-offset: 2px;
+      border-radius: 9px;
+    }
+
+    .collapsible-content {
+      padding: 2px 0 22px;
     }
 
     .preset-picker {
@@ -454,10 +483,6 @@
         grid-column: 1 / -1;
       }
 
-      .vehicle-section .field:first-child {
-        grid-column: auto;
-      }
-
       .calculate-button {
         width: auto;
         min-width: 190px;
@@ -502,105 +527,112 @@
               <button class="preset-button" id="bedros-lane-preset" type="button" data-preset data-pricing-mode="hour" data-connection-fee="0" data-tax-rate="14" data-price-per-hour="2" data-station-capacity="6" data-power-adjustment="true">Bedros Lane</button>
             </div>
           </div>
-          <fieldset class="pricing-mode">
-            <legend>Station pricing</legend>
-            <div class="mode-options">
-              <label class="mode-option" for="pricing-mode-kwh">
-                <input id="pricing-mode-kwh" name="pricing-mode" type="radio" value="kwh" checked>
-                <span>Per kWh</span>
-              </label>
-              <label class="mode-option" for="pricing-mode-hour">
-                <input id="pricing-mode-hour" name="pricing-mode" type="radio" value="hour">
-                <span>Per hour</span>
-              </label>
-            </div>
-          </fieldset>
-          <div class="fields">
-            <div class="field">
-              <label for="connection-fee">Connection fee</label>
-              <p class="field-note" id="fee-note">Before tax</p>
-              <div class="input-wrap">
-                <span class="input-prefix" aria-hidden="true">$</span>
-                <input id="connection-fee" name="connection-fee" type="number" min="0" step="any" inputmode="decimal" value="0.75" aria-describedby="fee-note" required>
+          <details class="collapsible-section" open>
+            <summary>Station settings</summary>
+            <div class="collapsible-content">
+              <fieldset class="pricing-mode">
+                <legend>Station pricing</legend>
+                <div class="mode-options">
+                  <label class="mode-option" for="pricing-mode-kwh">
+                    <input id="pricing-mode-kwh" name="pricing-mode" type="radio" value="kwh" checked>
+                    <span>Per kWh</span>
+                  </label>
+                  <label class="mode-option" for="pricing-mode-hour">
+                    <input id="pricing-mode-hour" name="pricing-mode" type="radio" value="hour">
+                    <span>Per hour</span>
+                  </label>
+                </div>
+              </fieldset>
+              <div class="fields">
+                <div class="field">
+                  <label for="connection-fee">Connection fee</label>
+                  <p class="field-note" id="fee-note">Before tax</p>
+                  <div class="input-wrap">
+                    <span class="input-prefix" aria-hidden="true">$</span>
+                    <input id="connection-fee" name="connection-fee" type="number" min="0" step="any" inputmode="decimal" value="0.75" aria-describedby="fee-note" required>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="tax-rate">Tax rate</label>
+                  <p class="field-note" id="tax-note">Applied to the fee and energy rate</p>
+                  <div class="input-wrap">
+                    <input id="tax-rate" name="tax-rate" type="number" min="0" step="any" inputmode="decimal" value="14" aria-describedby="tax-note" required>
+                    <span class="input-suffix" aria-hidden="true">%</span>
+                  </div>
+                </div>
+
+                <div class="field" id="energy-rate-field">
+                  <label for="price-per-kwh">Cost per kilowatt-hour</label>
+                  <p class="field-note" id="price-note">Before tax</p>
+                  <div class="input-wrap">
+                    <span class="input-prefix" aria-hidden="true">$</span>
+                    <input id="price-per-kwh" name="price-per-kwh" type="number" min="0" step="any" inputmode="decimal" value="0.25" aria-describedby="price-note" required>
+                  </div>
+                </div>
+
+                <div class="field" id="hourly-rate-field" hidden>
+                  <label for="price-per-hour">Station price per hour</label>
+                  <p class="field-note" id="hourly-rate-note">Before tax; adjusted for power used</p>
+                  <div class="input-wrap">
+                    <span class="input-prefix" aria-hidden="true">$</span>
+                    <input id="price-per-hour" name="price-per-hour" type="number" min="0" step="any" inputmode="decimal" value="2" aria-describedby="hourly-rate-note">
+                    <span class="input-suffix" aria-hidden="true">/ hour</span>
+                  </div>
+                </div>
+
+                <div class="field" id="power-adjustment-field" hidden>
+                  <label class="check-option" for="adjust-price-by-power">
+                    <input id="adjust-price-by-power" name="adjust-price-by-power" type="checkbox" checked aria-describedby="power-adjustment-note">
+                    <span>Adjust price for power used</span>
+                  </label>
+                  <p class="field-note" id="power-adjustment-note">Turn off for a fixed hourly rate regardless of station capacity.</p>
+                </div>
+
+                <div class="field" id="station-capacity-field" hidden>
+                  <label for="station-capacity">Station power capacity</label>
+                  <p class="field-note" id="capacity-note">Maximum station output in kW</p>
+                  <div class="input-wrap">
+                    <input id="station-capacity" name="station-capacity" type="number" min="0" step="any" inputmode="decimal" value="6.7" aria-describedby="capacity-note">
+                    <span class="input-suffix" aria-hidden="true">kW</span>
+                  </div>
+                </div>
               </div>
             </div>
+          </details>
 
-            <div class="field">
-              <label for="tax-rate">Tax rate</label>
-              <p class="field-note" id="tax-note">Applied to the fee and energy rate</p>
-              <div class="input-wrap">
-                <input id="tax-rate" name="tax-rate" type="number" min="0" step="any" inputmode="decimal" value="14" aria-describedby="tax-note" required>
-                <span class="input-suffix" aria-hidden="true">%</span>
+          <details class="collapsible-section" open>
+            <summary>Vehicle estimates</summary>
+            <div class="collapsible-content">
+              <div class="fields">
+                <div class="field">
+                  <label for="session-hours">Session duration</label>
+                  <p class="field-note" id="session-note">Optional; use HH:mm:ss (for example, 01:30:00). Leave blank or use 00:00:00 to omit.</p>
+                  <div class="input-wrap">
+                    <input id="session-hours" name="session-hours" type="text" inputmode="text" maxlength="8" autocomplete="off" spellcheck="false" aria-describedby="session-note" placeholder="HH:mm:ss">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="charging-power">Average vehicle charging power</label>
+                  <p class="field-note" id="charging-power-note">Used for fixed hourly pricing and estimated session duration</p>
+                  <div class="input-wrap">
+                    <input id="charging-power" name="charging-power" type="number" min="0" step="any" inputmode="decimal" value="3.0" aria-describedby="charging-power-note">
+                    <span class="input-suffix" aria-hidden="true">kW</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="vehicle-efficiency">Vehicle efficiency</label>
+                  <p class="field-note" id="efficiency-note">Optional; distance per unit of energy</p>
+                  <div class="input-wrap">
+                    <input id="vehicle-efficiency" name="vehicle-efficiency" type="number" min="0" step="any" inputmode="decimal" value="4" aria-describedby="efficiency-note">
+                    <span class="input-suffix" aria-hidden="true">km/kWh</span>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div class="field" id="energy-rate-field">
-              <label for="price-per-kwh">Cost per kilowatt-hour</label>
-              <p class="field-note" id="price-note">Before tax</p>
-              <div class="input-wrap">
-                <span class="input-prefix" aria-hidden="true">$</span>
-                <input id="price-per-kwh" name="price-per-kwh" type="number" min="0" step="any" inputmode="decimal" value="0.25" aria-describedby="price-note" required>
-              </div>
-            </div>
-
-            <div class="field" id="hourly-rate-field" hidden>
-              <label for="price-per-hour">Station price per hour</label>
-              <p class="field-note" id="hourly-rate-note">Before tax; adjusted for power used</p>
-              <div class="input-wrap">
-                <span class="input-prefix" aria-hidden="true">$</span>
-                <input id="price-per-hour" name="price-per-hour" type="number" min="0" step="any" inputmode="decimal" value="2" aria-describedby="hourly-rate-note">
-                <span class="input-suffix" aria-hidden="true">/ hour</span>
-              </div>
-            </div>
-
-            <div class="field" id="power-adjustment-field" hidden>
-              <label class="check-option" for="adjust-price-by-power">
-                <input id="adjust-price-by-power" name="adjust-price-by-power" type="checkbox" checked aria-describedby="power-adjustment-note">
-                <span>Adjust price for power used</span>
-              </label>
-              <p class="field-note" id="power-adjustment-note">Turn off for a fixed hourly rate regardless of station capacity.</p>
-            </div>
-
-            <div class="field" id="station-capacity-field" hidden>
-              <label for="station-capacity">Station power capacity</label>
-              <p class="field-note" id="capacity-note">Maximum station output in kW</p>
-              <div class="input-wrap">
-                <input id="station-capacity" name="station-capacity" type="number" min="0" step="any" inputmode="decimal" value="6.7" aria-describedby="capacity-note">
-                <span class="input-suffix" aria-hidden="true">kW</span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="session-hours">Session duration</label>
-              <p class="field-note" id="session-note">Optional; use HH:mm:ss (for example, 01:30:00)</p>
-              <div class="input-wrap">
-                <input id="session-hours" name="session-hours" type="text" inputmode="text" maxlength="8" autocomplete="off" spellcheck="false" aria-describedby="session-note" placeholder="HH:mm:ss">
-              </div>
-            </div>
-          </div>
-
-          <fieldset class="vehicle-section">
-            <legend>Vehicle estimates</legend>
-            <div class="fields">
-            <div class="field">
-              <label for="charging-power">Average vehicle charging power</label>
-              <p class="field-note" id="charging-power-note">Used for fixed hourly pricing and estimated session duration</p>
-              <div class="input-wrap">
-                <input id="charging-power" name="charging-power" type="number" min="0" step="any" inputmode="decimal" value="3.0" aria-describedby="charging-power-note">
-                <span class="input-suffix" aria-hidden="true">kW</span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="vehicle-efficiency">Vehicle efficiency</label>
-              <p class="field-note" id="efficiency-note">Optional; distance per unit of energy</p>
-              <div class="input-wrap">
-                <input id="vehicle-efficiency" name="vehicle-efficiency" type="number" min="0" step="any" inputmode="decimal" value="4" aria-describedby="efficiency-note">
-                <span class="input-suffix" aria-hidden="true">km/kWh</span>
-              </div>
-            </div>
-            </div>
-          </fieldset>
+          </details>
 
           <p class="notice" id="notice" role="alert"></p>
           <button class="calculate-button" type="submit">Calculate energy</button>
@@ -617,12 +649,13 @@
         <dl class="breakdown" aria-label="Cost breakdown">
           <div class="breakdown-row" id="range-row" hidden><dt>Estimated driving range</dt><dd><strong id="range-estimate">--</strong></dd></div>
           <div class="breakdown-row" id="cost-per-distance-row" hidden><dt>Cost per 100 km</dt><dd><strong id="cost-per-distance">--</strong></dd></div>
+          <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Total tax amount</dt><dd><strong id="total-tax">--</strong></dd></div>
           <div class="breakdown-row"><dt>Total paid before tax</dt><dd><strong id="total-before-tax">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
           <div class="breakdown-row"><dt>Amount for energy before tax</dt><dd><strong id="energy-spend">--</strong></dd></div>
           <div class="breakdown-row"><dt>Effective energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
+          <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
           <div class="breakdown-row" id="power-row" hidden><dt>Average charging power</dt><dd><strong id="average-power">--</strong></dd></div>
-          <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
         </dl>
         <p class="assumption">Tax is applied to the connection fee and the selected station energy price.</p>
         <p class="assumption">Tax is removed from the total paid before calculating energy and cost per 100 km.</p>
@@ -650,6 +683,7 @@
     const notice = document.querySelector("#notice");
     const result = document.querySelector("#energy-result");
     const resultMessage = document.querySelector("#result-message");
+    const totalTaxOutput = document.querySelector("#total-tax");
     const totalBeforeTaxOutput = document.querySelector("#total-before-tax");
     const feeTotal = document.querySelector("#fee-total");
     const energySpend = document.querySelector("#energy-spend");
@@ -692,9 +726,18 @@
         durationEstimate.textContent = "--";
         rangeEstimate.textContent = "--";
         costPerDistance.textContent = "--";
+        totalTaxOutput.textContent = "--";
       }
       resultMessage.textContent = message ? "Check the amounts and try again." : "Estimate updated.";
       resultMessage.classList.toggle("error", Boolean(message));
+    }
+
+    function focusInput(input) {
+      const section = input.closest("details");
+      if (section) {
+        section.open = true;
+      }
+      input.focus();
     }
 
     function formatDuration(totalSeconds) {
@@ -746,7 +789,7 @@
       const stationCapacity = Number(stationCapacityInput.value);
       const adjustPriceByPower = powerAdjustmentInput.checked;
       const sessionText = sessionInput.value.trim();
-      const sessionProvided = sessionText !== "";
+      const sessionProvided = sessionText !== "" && sessionText !== "00:00:00";
       const chargingPowerText = chargingPowerInput.value.trim();
       const chargingPower = Number(chargingPowerInput.value);
       const efficiencyText = efficiencyInput.value.trim();
@@ -756,7 +799,7 @@
       for (const input of inputs) {
         if (input.value.trim() === "" || !Number.isFinite(Number(input.value)) || Number(input.value) < 0) {
           setNotice("Enter a valid, non-negative value in every field.");
-          input.focus();
+          focusInput(input);
           return;
         }
       }
@@ -765,13 +808,13 @@
         setNotice(pricingMode === "kwh"
           ? "Cost per kilowatt-hour must be greater than zero."
           : "Station price per hour must be greater than zero.");
-        (pricingMode === "kwh" ? rateInput : hourlyRateInput).focus();
+        focusInput(pricingMode === "kwh" ? rateInput : hourlyRateInput);
         return;
       }
 
       if (pricingMode === "hour" && adjustPriceByPower && (capacityText === "" || !Number.isFinite(stationCapacity) || stationCapacity <= 0)) {
         setNotice("Station power capacity must be greater than zero.");
-        stationCapacityInput.focus();
+        focusInput(stationCapacityInput);
         return;
       }
 
@@ -780,16 +823,11 @@
         const durationParts = sessionText.match(/^(\d{2}):([0-5]\d):([0-5]\d)$/);
         if (!durationParts) {
           setNotice("Enter session duration as HH:mm:ss, or leave it blank.");
-          sessionInput.focus();
+          focusInput(sessionInput);
           return;
         }
 
         sessionHours = Number(durationParts[1]) + Number(durationParts[2]) / 60 + Number(durationParts[3]) / 3600;
-        if (sessionHours === 0) {
-          setNotice("Session duration must be greater than 00:00:00.");
-          sessionInput.focus();
-          return;
-        }
       }
 
       const chargingPowerRequired = pricingMode === "hour" && !adjustPriceByPower;
@@ -798,13 +836,13 @@
         setNotice(chargingPowerRequired
           ? "Average vehicle charging power must be greater than zero for fixed hourly pricing."
           : "Average vehicle charging power must be greater than zero, or leave it blank.");
-        chargingPowerInput.focus();
+        focusInput(chargingPowerInput);
         return;
       }
 
       if (efficiencyText !== "" && (!Number.isFinite(efficiency) || efficiency <= 0)) {
         setNotice("Vehicle efficiency must be greater than zero, or leave it blank.");
-        efficiencyInput.focus();
+        focusInput(efficiencyInput);
         return;
       }
 
@@ -819,7 +857,7 @@
 
       if (amountForEnergy < -0.005) {
         setNotice("The total paid is less than the connection fee including tax.");
-        totalInput.focus();
+        focusInput(totalInput);
         return;
       }
 
@@ -832,6 +870,7 @@
       const kilowattHours = preTaxEnergyAmount / energyRateBeforeTax;
       setNotice("");
       result.textContent = kilowattHours.toFixed(2);
+      totalTaxOutput.textContent = currency.format(total - totalBeforeTax);
       totalBeforeTaxOutput.textContent = currency.format(totalBeforeTax);
       feeTotal.textContent = currency.format(connectionFeeWithTax);
       energySpend.textContent = currency.format(preTaxEnergyAmount);
