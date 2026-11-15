@@ -401,11 +401,33 @@
       color: var(--coral);
     }
 
+    .result-details {
+      margin: auto 0 0;
+      padding: 25px 0 0;
+    }
+
+    .estimate-highlights {
+      margin-bottom: 18px;
+      padding: 16px;
+      border-radius: 9px;
+      background: #edf0ff;
+    }
+
+    .estimate-highlights[hidden] {
+      display: none;
+    }
+
+    .estimate-highlights h3 {
+      margin: 0 0 4px;
+      color: var(--accent-strong);
+      font-size: 0.95rem;
+    }
+
     .breakdown {
       display: grid;
       gap: 0;
-      margin: auto 0 0;
-      padding: 25px 0 0;
+      margin: 0;
+      padding: 0;
     }
 
     .breakdown-row {
@@ -420,6 +442,14 @@
 
     .breakdown-row[hidden] {
       display: none;
+    }
+
+    .estimate-highlights .breakdown-row {
+      border-top: 0;
+    }
+
+    .estimate-highlights .breakdown-row:not([hidden]) ~ .breakdown-row:not([hidden]) {
+      border-top: 1px solid #d5dcf5;
     }
 
     .breakdown-row strong {
@@ -527,7 +557,7 @@
               <button class="preset-button" id="bedros-lane-preset" type="button" data-preset data-pricing-mode="hour" data-connection-fee="0" data-tax-rate="14" data-price-per-hour="2" data-station-capacity="6" data-power-adjustment="true">Bedros Lane</button>
             </div>
           </div>
-          <details class="collapsible-section" open>
+          <details class="collapsible-section" closed>
             <summary>Station settings</summary>
             <div class="collapsible-content">
               <fieldset class="pricing-mode">
@@ -601,7 +631,7 @@
             </div>
           </details>
 
-          <details class="collapsible-section" open>
+          <details class="collapsible-section" closed>
             <summary>Vehicle estimates</summary>
             <div class="collapsible-content">
               <div class="fields">
@@ -646,17 +676,24 @@
         <p class="result-unit">kilowatt-hours (kWh)</p>
         <p class="message" id="result-message">Enter your receipt total to get started.</p>
 
-        <dl class="breakdown" aria-label="Cost breakdown">
-          <div class="breakdown-row" id="range-row" hidden><dt>Estimated driving range</dt><dd><strong id="range-estimate">--</strong></dd></div>
-          <div class="breakdown-row" id="cost-per-distance-row" hidden><dt>Cost per 100 km</dt><dd><strong id="cost-per-distance">--</strong></dd></div>
-          <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Total tax amount</dt><dd><strong id="total-tax">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Total paid before tax</dt><dd><strong id="total-before-tax">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Amount for energy before tax</dt><dd><strong id="energy-spend">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Effective energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
-          <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
-          <div class="breakdown-row" id="power-row" hidden><dt>Average charging power</dt><dd><strong id="average-power">--</strong></dd></div>
-        </dl>
+        <div class="result-details">
+          <section class="estimate-highlights" id="estimate-highlights" aria-labelledby="estimates-heading" hidden>
+            <h3 id="estimates-heading">Trip estimates</h3>
+            <dl class="breakdown">
+              <div class="breakdown-row" id="range-row" hidden><dt>Estimated driving range</dt><dd><strong id="range-estimate">--</strong></dd></div>
+              <div class="breakdown-row" id="cost-per-distance-row" hidden><dt>Cost per 100 km</dt><dd><strong id="cost-per-distance">--</strong></dd></div>
+              <div class="breakdown-row" id="duration-estimate-row" hidden><dt>Estimated session duration</dt><dd><strong id="duration-estimate">--</strong></dd></div>
+            </dl>
+          </section>
+          <dl class="breakdown" aria-label="Cost breakdown">
+            <div class="breakdown-row"><dt>Total tax amount</dt><dd><strong id="total-tax">--</strong></dd></div>
+            <div class="breakdown-row"><dt>Total paid before tax</dt><dd><strong id="total-before-tax">--</strong></dd></div>
+            <div class="breakdown-row"><dt>Amount for energy before tax</dt><dd><strong id="energy-spend">--</strong></dd></div>
+            <div class="breakdown-row"><dt>Effective energy rate with tax</dt><dd><strong id="rate-total">--</strong></dd></div>
+            <div class="breakdown-row"><dt>Connection fee with tax</dt><dd><strong id="fee-total">--</strong></dd></div>
+            <div class="breakdown-row" id="power-row" hidden><dt>Average charging power</dt><dd><strong id="average-power">--</strong></dd></div>
+          </dl>
+        </div>
         <p class="assumption">Tax is applied to the connection fee and the selected station energy price.</p>
         <p class="assumption">Tax is removed from the total paid before calculating energy and cost per 100 km.</p>
       </section>
@@ -683,6 +720,7 @@
     const notice = document.querySelector("#notice");
     const result = document.querySelector("#energy-result");
     const resultMessage = document.querySelector("#result-message");
+    const estimateHighlights = document.querySelector("#estimate-highlights");
     const totalTaxOutput = document.querySelector("#total-tax");
     const totalBeforeTaxOutput = document.querySelector("#total-before-tax");
     const feeTotal = document.querySelector("#fee-total");
@@ -718,6 +756,7 @@
       result.classList.toggle("error", Boolean(message));
       result.textContent = message ? "--" : result.textContent;
       if (message) {
+        estimateHighlights.hidden = true;
         powerRow.hidden = true;
         durationEstimateRow.hidden = true;
         rangeRow.hidden = true;
@@ -893,6 +932,7 @@
         durationEstimateRow.hidden = false;
         durationEstimate.textContent = formatDuration((kilowattHours / chargingPower) * 3600);
       }
+      estimateHighlights.hidden = rangeRow.hidden && costPerDistanceRow.hidden && durationEstimateRow.hidden;
     });
   </script>
 </body>
