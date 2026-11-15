@@ -269,6 +269,11 @@
       font-weight: 700;
     }
 
+    .preset-button[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: #edf0ff;
+    }
+
     .preset-button:hover {
       border-color: var(--accent);
       background: #f1f3ff;
@@ -465,6 +470,60 @@
       line-height: 1.5;
     }
 
+    .comparison-panel {
+      margin-top: 18px;
+    }
+
+    .comparison-intro {
+      margin: -8px 0 16px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .comparison-card {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+    }
+
+    .comparison-card h3 {
+      margin: 0 0 4px;
+      font-size: 0.98rem;
+    }
+
+    .comparison-card dd {
+      margin: 0;
+    }
+
+    .comparison-card .breakdown-row {
+      display: grid;
+      gap: 5px;
+      padding: 11px 0;
+    }
+
+    .comparison-card .breakdown-row[hidden] {
+      display: none;
+    }
+
+    .comparison-card .breakdown-row strong {
+      text-align: left;
+    }
+
+    @media (max-width: 680px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .notice {
       display: none;
       margin: 15px 0 0;
@@ -549,12 +608,13 @@
               </div>
             </div>
           </div>
-          <div class="preset-picker" role="group" aria-label="Station presets">
-            <span class="preset-picker-label">Sample station</span>
+          <div class="preset-picker" role="group" aria-label="Station selection">
+            <span class="preset-picker-label">Station</span>
             <div class="preset-buttons">
-              <button class="preset-button" id="delridge-preset" type="button" data-preset data-pricing-mode="kwh" data-connection-fee="0" data-tax-rate="0" data-price-per-kwh="0.19" data-charging-power="3.0">Delridge</button>
-              <button class="preset-button" id="royal-towers-preset" type="button" data-preset data-pricing-mode="kwh" data-connection-fee="0.75" data-tax-rate="14" data-price-per-kwh="0.25" data-charging-power="3.0">Royal Towers</button>
-              <button class="preset-button" id="bedros-lane-preset" type="button" data-preset data-pricing-mode="hour" data-connection-fee="0" data-tax-rate="14" data-price-per-hour="2" data-station-capacity="6" data-power-adjustment="true">Bedros Lane</button>
+              <button class="preset-button" id="other-preset" type="button" data-station-option aria-pressed="false">Other</button>
+              <button class="preset-button" id="delridge-preset" type="button" data-station-option data-preset data-pricing-mode="kwh" data-connection-fee="0" data-tax-rate="0" data-price-per-kwh="0.19" data-charging-power="3.0" aria-pressed="false">Delridge</button>
+              <button class="preset-button" id="royal-towers-preset" type="button" data-station-option data-preset data-pricing-mode="kwh" data-connection-fee="0.75" data-tax-rate="14" data-price-per-kwh="0.25" data-charging-power="3.0" aria-pressed="true">Royal Towers</button>
+              <button class="preset-button" id="bedros-lane-preset" type="button" data-station-option data-preset data-pricing-mode="hour" data-connection-fee="0" data-tax-rate="14" data-price-per-hour="2" data-station-capacity="6" data-power-adjustment="true" aria-pressed="false">Bedros Lane</button>
             </div>
           </div>
           <details class="collapsible-section" closed>
@@ -698,6 +758,37 @@
         <p class="assumption">Tax is removed from the total paid before calculating energy and cost per 100 km.</p>
       </section>
     </div>
+
+    <section class="panel comparison-panel" id="station-comparison" aria-labelledby="comparison-heading" aria-live="polite" hidden>
+      <h2 id="comparison-heading">Station comparison</h2>
+      <p class="comparison-intro">Trip estimates for the same amount paid at each sample station.</p>
+      <div class="comparison-grid">
+        <article class="comparison-card" aria-labelledby="comparison-delridge-heading">
+          <h3 id="comparison-delridge-heading">Delridge</h3>
+          <dl class="breakdown">
+            <div class="breakdown-row" data-comparison-metric="range" hidden><dt>Estimated driving range</dt><dd><strong id="comparison-delridge-range">--</strong></dd></div>
+            <div class="breakdown-row" data-comparison-metric="cost" hidden><dt>Cost per 100 km</dt><dd><strong id="comparison-delridge-cost">--</strong></dd></div>
+            <div class="breakdown-row" data-comparison-metric="duration" hidden><dt>Estimated session duration</dt><dd><strong id="comparison-delridge-duration">--</strong></dd></div>
+          </dl>
+        </article>
+        <article class="comparison-card" aria-labelledby="comparison-royal-towers-heading">
+          <h3 id="comparison-royal-towers-heading">Royal Towers</h3>
+          <dl class="breakdown">
+            <div class="breakdown-row" data-comparison-metric="range" hidden><dt>Estimated driving range</dt><dd><strong id="comparison-royal-towers-range">--</strong></dd></div>
+            <div class="breakdown-row" data-comparison-metric="cost" hidden><dt>Cost per 100 km</dt><dd><strong id="comparison-royal-towers-cost">--</strong></dd></div>
+            <div class="breakdown-row" data-comparison-metric="duration" hidden><dt>Estimated session duration</dt><dd><strong id="comparison-royal-towers-duration">--</strong></dd></div>
+          </dl>
+        </article>
+        <article class="comparison-card" aria-labelledby="comparison-bedros-lane-heading">
+          <h3 id="comparison-bedros-lane-heading">Bedros Lane</h3>
+          <dl class="breakdown">
+            <div class="breakdown-row" data-comparison-metric="range" hidden><dt>Estimated driving range</dt><dd><strong id="comparison-bedros-lane-range">--</strong></dd></div>
+            <div class="breakdown-row" data-comparison-metric="cost" hidden><dt>Cost per 100 km</dt><dd><strong id="comparison-bedros-lane-cost">--</strong></dd></div>
+            <div class="breakdown-row" data-comparison-metric="duration" hidden><dt>Estimated session duration</dt><dd><strong id="comparison-bedros-lane-duration">--</strong></dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -717,10 +808,13 @@
     const chargingPowerInput = document.querySelector("#charging-power");
     const efficiencyInput = document.querySelector("#vehicle-efficiency");
     const presetButtons = document.querySelectorAll("[data-preset]");
+    const stationOptionButtons = document.querySelectorAll("[data-station-option]");
+    const otherPresetButton = document.querySelector("#other-preset");
     const notice = document.querySelector("#notice");
     const result = document.querySelector("#energy-result");
     const resultMessage = document.querySelector("#result-message");
     const estimateHighlights = document.querySelector("#estimate-highlights");
+    const stationComparison = document.querySelector("#station-comparison");
     const totalTaxOutput = document.querySelector("#total-tax");
     const totalBeforeTaxOutput = document.querySelector("#total-before-tax");
     const feeTotal = document.querySelector("#fee-total");
@@ -750,6 +844,12 @@
       stationCapacityField.hidden = !hourlyMode || !powerAdjustmentInput.checked;
     }
 
+    function selectStationOption(selectedButton) {
+      stationOptionButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button === selectedButton));
+      });
+    }
+
     function setNotice(message) {
       notice.textContent = message;
       notice.classList.toggle("visible", Boolean(message));
@@ -757,6 +857,7 @@
       result.textContent = message ? "--" : result.textContent;
       if (message) {
         estimateHighlights.hidden = true;
+        stationComparison.hidden = true;
         powerRow.hidden = true;
         durationEstimateRow.hidden = true;
         rangeRow.hidden = true;
@@ -787,8 +888,59 @@
       return [hours, minutes, seconds].map((part) => String(part).padStart(2, "0")).join(":");
     }
 
+    function updateStationComparison(total, efficiency, efficiencyText, sessionProvided, chargingPowerText, chargingPower) {
+      const showRange = efficiencyText !== "";
+      const showCost = showRange;
+      const showDuration = !sessionProvided && chargingPowerText !== "";
+      const hasTripEstimates = showRange || showDuration;
+      stationComparison.hidden = !hasTripEstimates;
+
+      for (const row of stationComparison.querySelectorAll("[data-comparison-metric]")) {
+        const metric = row.dataset.comparisonMetric;
+        row.hidden = metric === "range" ? !showRange : metric === "cost" ? !showCost : !showDuration;
+      }
+
+      if (!hasTripEstimates) {
+        return;
+      }
+
+      for (const button of presetButtons) {
+        const station = button.id.replace(/-preset$/, "");
+        const taxMultiplier = 1 + Number(button.dataset.taxRate) / 100;
+        const totalBeforeTax = total / taxMultiplier;
+        const connectionFee = Number(button.dataset.connectionFee);
+        const energyRateBeforeTax = button.dataset.pricingMode === "kwh"
+          ? Number(button.dataset.pricePerKwh)
+          : Number(button.dataset.pricePerHour) / Number(button.dataset.stationCapacity);
+        const amountForEnergy = totalBeforeTax - connectionFee;
+        const outputs = {
+          range: document.getElementById(`comparison-${station}-range`),
+          cost: document.getElementById(`comparison-${station}-cost`),
+          duration: document.getElementById(`comparison-${station}-duration`)
+        };
+
+        if (amountForEnergy < -0.005) {
+          for (const output of Object.values(outputs)) {
+            output.textContent = "Below station fee";
+          }
+          continue;
+        }
+
+        const kilowattHours = Math.max(0, amountForEnergy) / energyRateBeforeTax;
+        const estimatedRange = kilowattHours * efficiency;
+        outputs.range.textContent = `${estimatedRange.toFixed(1)} km`;
+        outputs.cost.textContent = estimatedRange > 0
+          ? currency.format((totalBeforeTax / estimatedRange) * 100)
+          : "Not available";
+        outputs.duration.textContent = showDuration
+          ? formatDuration((kilowattHours / chargingPower) * 3600)
+          : "--";
+      }
+    }
+
     presetButtons.forEach((button) => {
       button.addEventListener("click", () => {
+        selectStationOption(button);
         document.querySelector(`#pricing-mode-${button.dataset.pricingMode}`).checked = true;
         if (button.dataset.powerAdjustment !== undefined) {
           powerAdjustmentInput.checked = button.dataset.powerAdjustment === "true";
@@ -810,10 +962,24 @@
       });
     });
 
-    document.querySelectorAll('input[name="pricing-mode"]').forEach((input) => {
-      input.addEventListener("change", syncPricingFields);
+    otherPresetButton.addEventListener("click", () => {
+      selectStationOption(otherPresetButton);
     });
-    powerAdjustmentInput.addEventListener("change", syncPricingFields);
+
+    [feeInput, taxInput, rateInput, hourlyRateInput, stationCapacityInput].forEach((input) => {
+      input.addEventListener("input", () => selectStationOption(otherPresetButton));
+    });
+
+    document.querySelectorAll('input[name="pricing-mode"]').forEach((input) => {
+      input.addEventListener("change", () => {
+        syncPricingFields();
+        selectStationOption(otherPresetButton);
+      });
+    });
+    powerAdjustmentInput.addEventListener("change", () => {
+      syncPricingFields();
+      selectStationOption(otherPresetButton);
+    });
     syncPricingFields();
 
     form.addEventListener("submit", (event) => {
@@ -933,6 +1099,7 @@
         durationEstimate.textContent = formatDuration((kilowattHours / chargingPower) * 3600);
       }
       estimateHighlights.hidden = rangeRow.hidden && costPerDistanceRow.hidden && durationEstimateRow.hidden;
+      updateStationComparison(total, efficiency, efficiencyText, sessionProvided, chargingPowerText, chargingPower);
     });
   </script>
 </body>
