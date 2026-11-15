@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <title>Lorem Ipsum Generator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20242b;
+      --muted: #59636f;
+      --line: #e0e3e8;
+      --paper: #fff;
+      --canvas: #f5f4f0;
+      --accent: #3559e8;
+      --accent-strong: #2343c7;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button, input, select, textarea { font: inherit; }
+    .page { width: min(100% - 32px, 1040px); margin: auto; padding: 30px 0 42px; }
+    a { color: var(--accent-strong); }
+    .back-link { display: inline-flex; min-height: 44px; align-items: center; margin-bottom: 16px; }
+    h1 { margin: 24px 0 10px; font-size: clamp(1.8rem, 6vw, 2.6rem); }
+    .intro, .help, .message, .stats { color: var(--muted); line-height: 1.6; }
+    .intro { max-width: 680px; margin-bottom: 24px; }
+    .layout { display: grid; gap: 18px; }
+    .panel {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: 0 8px 26px rgb(26 35 54 / 5%);
+    }
+    h2 { margin: 0 0 20px; font-size: 1.2rem; }
+    .field { display: grid; gap: 8px; margin-bottom: 18px; }
+    label { font-weight: 650; }
+    select, input[type="number"], textarea {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .checkbox { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 400; }
+    input[type="checkbox"] { flex-shrink: 0; width: 20px; height: 20px; accent-color: var(--accent); }
+    .help { margin: 8px 0 20px; font-size: 0.85rem; }
+    button {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #f1f3ff; }
+    .primary { width: 100%; border: 0; border-radius: 999px; background: var(--accent); color: white; }
+    .primary:hover { background: var(--accent-strong); }
+    :focus-visible { outline: 3px solid rgb(53 89 232 / 35%); outline-offset: 2px; }
+    textarea { display: block; min-height: 400px; resize: vertical; border-radius: 11px; line-height: 1.8; }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+    .stats { margin: 12px 0 0; font-size: 0.85rem; }
+    .message { min-height: 1.6em; margin: 16px 0 0; }
+    .message.error { color: #b42318; }
+    @media (min-width: 760px) {
+      .layout { grid-template-columns: 310px minmax(0, 1fr); }
+      .page { padding-top: 40px; }
+      textarea { min-height: 470px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="index.html" data-text="back">All tools</a>
+    <h1 data-text="title">Lorem Ipsum Generator</h1>
+    <p class="intro" data-text="intro">Create placeholder text for layouts and mockups in English or Arabic. Everything runs locally, even offline.</p>
+    <div class="layout">
+      <form class="panel" id="generator">
+        <h2 data-text="settings">Generator settings</h2>
+        <div class="field">
+          <label for="language" data-text="language">Language</label>
+          <select id="language">
+            <option value="en">English</option>
+            <option value="ar" lang="ar">العربية</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="mode" data-text="mode">Generate by</label>
+          <select id="mode">
+            <option value="paragraphs" data-text="paragraphs">Paragraphs</option>
+            <option value="words" data-text="words">Words</option>
+            <option value="bytes" data-text="bytes">Bytes</option>
+            <option value="lists" data-text="lists">List items</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="amount" data-text="amount">Amount</label>
+          <input id="amount" type="number" value="5" min="1" max="100" step="1" required aria-describedby="limit">
+          <span class="help" id="limit"></span>
+        </div>
+        <label class="checkbox">
+          <input id="opening" type="checkbox" checked>
+          <span data-text="opening">Start with the standard opening</span>
+        </label>
+        <p class="help" data-text="note">English generates Latin-style Lorem Ipsum; Arabic generates randomized Arabic dummy text. Byte mode counts UTF-8, keeps characters intact, and pads with a space if needed.</p>
+        <button class="primary" type="submit" data-text="generate">Generate text</button>
+      </form>
+      <section class="panel" aria-labelledby="output-title">
+        <h2 id="output-title" data-text="output">Generated text</h2>
+        <textarea id="output" readonly aria-labelledby="output-title" spellcheck="false"></textarea>
+        <p class="stats" id="stats"></p>
+        <div class="actions">
+          <button id="copy" type="button" data-text="copy">Copy text</button>
+          <button id="download" type="button" data-text="download">Download .txt</button>
+        </div>
+      </section>
+    </div>
+    <p class="message" id="message" role="status" aria-live="polite"></p>
+  </main>
+  <script>
+    (() => {
+      const translations = {
+        en: {
+          back: "All tools", title: "Lorem Ipsum Generator", settings: "Generator settings",
+          intro: "Create placeholder text for layouts and mockups in English or Arabic. Everything runs locally, even offline.",
+          language: "Language", mode: "Generate by", amount: "Amount", paragraphs: "Paragraphs",
+          words: "Words", bytes: "Bytes", lists: "List items", opening: "Start with the standard opening",
+          note: "English generates Latin-style Lorem Ipsum; Arabic generates randomized Arabic dummy text. Byte mode counts UTF-8, keeps characters intact, and pads with a space if needed.",
+          generate: "Generate text", output: "Generated text", copy: "Copy text", download: "Download .txt",
+          limit: (max) => `Enter a whole number from 1 to ${max}.`,
+          generated: "Text generated.", copied: "Text copied to the clipboard.",
+          copyError: "Could not copy automatically. Select the text and copy it manually.",
+          downloaded: "Text download requested.",
+          stats: (words, bytes) => `${words} words · ${bytes} UTF-8 bytes`
+        }
+      };
+      const vocabulary = {
+        en: "lorem ipsum dolor sit amet consectetur adipiscing elit sed eiusmod tempor incididunt labore dolore magna aliqua enim minim veniam quis nostrud exercitation ullamco laboris nisi aliquip commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur excepteur sint occaecat cupidatat proident culpa officia deserunt mollit anim laborum vitae tellus massa nunc metus purus risus semper neque gravida facilisis pretium cursus lectus mauris sapien justo felis ultricies tincidunt posuere aliquet habitasse platea dictumst vestibulum fringilla ornare pellentesque dignissim suspendisse potenti scelerisque fermentum faucibus bibendum egestas volutpat dapibus blandit laoreet porttitor rutrum sagittis vehicula lacinia sollicitudin imperdiet mattis viverra elementum accumsan malesuada tristique senectus netus fames turpis",
+        ar: "نص تجريبي محتوى تصميم صفحة مساحة عنوان فقرة كلمات حروف سطور شكل ترتيب تنسيق نموذج عرض تفاصيل عناصر صورة لون إطار بداية نهاية وسط جانب مكان جزء مجموعة فكرة توازن إيقاع ضوء نمط نقطة مسار مجال نافذة حكاية مشهد طاولة صباح يوم رحلة فرصة تجربة وضوح جمال تنوع دفء قراءة كتابة بسيطة جديدة هادئة مختلفة طبيعية مريحة واضحة متوازنة متنوعة صغيرة كبيرة متصلة متباعدة مألوفة مفتوحة بين فوق تحت حول داخل خارج خلال قبل بعد مع من إلى على في"
+      };
+      const openings = {
+        en: "Lorem ipsum dolor sit amet.",
+        ar: "هذا نص تجريبي يستخدم لعرض شكل المحتوى في التصميم."
+      };
+      const limits = { paragraphs: 100, words: 10000, bytes: 50000, lists: 100 };
+      const language = document.getElementById("language");
+      const mode = document.getElementById("mode");
+      const amount = document.getElementById("amount");
+      const opening = document.getElementById("opening");
+      const output = document.getElementById("output");
+      const message = document.getElementById("message");
+      const encoder = new TextEncoder();
+      const dictionary = {};
+      for (const [lang, words] of Object.entries(vocabulary)) {
+        dictionary[lang] = words.split(" ");
+      }
+
+      function strings() { return translations.en; }
+      function setMessage(text, error = false) {
+        message.textContent = text;
+        message.classList.toggle("error", error);
+      }
+      function pick(values) { return values[Math.floor(Math.random() * values.length)]; }
+      function sentence() {
+        const length = 8 + Math.floor(Math.random() * 9);
+        const words = Array.from({ length }, () => pick(dictionary[language.value]));
+        const text = words.join(" ");
+        return `${text.charAt(0).toUpperCase()}${text.slice(1)}.`;
+      }
+      function paragraph(first, short = false) {
+        const sentences = [];
+        if (first && opening.checked) sentences.push(openings[language.value]);
+        const length = short ? 2 : 4 + Math.floor(Math.random() * 3);
+        while (sentences.length < length) sentences.push(sentence());
+        return sentences.join(" ");
+      }
+      function wordText(count) {
+        const words = opening.checked ? openings[language.value].split(/\s+/).slice(0, count) : [];
+        while (words.length < count) words.push(pick(dictionary[language.value]));
+        return words.join(" ");
+      }
+      function byteText(count) {
+        const parts = [];
+        let used = 0;
+        // Append whole Unicode characters, never a partial UTF-8 sequence.
+        while (used < count) {
+          const chunk = `${paragraph(parts.length === 0)} `;
+          for (const character of chunk) {
+            const size = encoder.encode(character).length;
+            if (used + size > count) {
+              parts.push(" ".repeat(count - used));
+              return parts.join("");
+            }
+            parts.push(character);
+            used += size;
+            if (used === count) return parts.join("");
+          }
+        }
+        return parts.join("");
+      }
+      function updateLimit() {
+        amount.max = limits[mode.value];
+        document.getElementById("limit").textContent = strings().limit(limits[mode.value]);
+      }
+      function generate() {
+        const count = amount.valueAsNumber;
+        if (!Number.isInteger(count) || count < 1 || count > limits[mode.value]) {
+          setMessage(strings().limit(limits[mode.value]), true);
+          amount.focus();
+          return;
+        }
+        let text;
+        if (mode.value === "words") text = wordText(count);
+        else if (mode.value === "bytes") text = byteText(count);
+        else {
+          text = Array.from({ length: count }, (_, index) => {
+            const content = paragraph(index === 0, mode.value === "lists");
+            return mode.value === "lists" ? `${index + 1}. ${content}` : content;
+          }).join(mode.value === "lists" ? "\n" : "\n\n");
+        }
+        output.value = text;
+        output.lang = language.value;
+        output.dir = language.value === "ar" ? "rtl" : "ltr";
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        document.getElementById("stats").textContent = strings().stats(words, encoder.encode(text).length);
+        setMessage(strings().generated);
+      }
+      function localize() {
+        document.title = strings().title;
+        document.querySelectorAll("[data-text]").forEach((element) => {
+          element.textContent = strings()[element.dataset.text];
+        });
+        updateLimit();
+        generate();
+      }
+      document.getElementById("generator").addEventListener("submit", (event) => {
+        event.preventDefault();
+        generate();
+      });
+      amount.addEventListener("invalid", () => setMessage(strings().limit(limits[mode.value]), true));
+      language.addEventListener("change", generate);
+      mode.addEventListener("change", updateLimit);
+      document.getElementById("copy").addEventListener("click", async () => {
+        const text = output.value;
+        try {
+          await navigator.clipboard.writeText(text);
+          setMessage(strings().copied);
+        } catch (error) {
+          console.error("Clipboard copy failed:", error);
+          output.focus();
+          output.select();
+          setMessage(strings().copyError, true);
+        }
+      });
+      document.getElementById("download").addEventListener("click", () => {
+        const url = URL.createObjectURL(new Blob([output.value], { type: "text/plain;charset=utf-8" }));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `placeholder-${output.lang}.txt`;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        setMessage(strings().downloaded);
+      });
+      localize();
+    })();
+  </script>
+</body>
+</html>

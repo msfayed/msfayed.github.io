@@ -46,6 +46,19 @@
       padding: 28px 0 40px;
     }
 
+    .back-link {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      margin-bottom: 16px;
+      color: var(--accent-strong);
+    }
+
+    .back-link:focus-visible {
+      outline: 3px solid rgb(53 89 232 / 35%);
+      outline-offset: 2px;
+    }
+
     .topline {
       display: flex;
       align-items: center;
@@ -590,6 +603,7 @@
 </head>
 <body>
   <main class="page">
+    <a class="back-link" href="index.html">All tools</a>
     <div class="topline"><span class="topline-mark" aria-hidden="true">e</span> EV charging estimate</div>
     <h1>How much energy did your stop buy?</h1>
     <p class="intro">Enter the amount you paid and the station's rates to estimate the energy delivered to your vehicle.</p>

@@ -40,6 +40,19 @@
       padding: 22px 0 42px;
     }
 
+    .back-link {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      margin-bottom: 16px;
+      color: var(--accent-strong);
+    }
+
+    .back-link:focus-visible {
+      outline: 3px solid rgb(53 89 232 / 35%);
+      outline-offset: 2px;
+    }
+
     .topbar {
       display: flex;
       align-items: center;
@@ -347,6 +360,7 @@
 </head>
 <body>
   <main class="page">
+    <a class="back-link" href="index.html">All tools</a>
     <header class="topbar">
       <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span><span>Name Wheel</span></div>
       <div class="top-note">A little spin for your next decision</div>

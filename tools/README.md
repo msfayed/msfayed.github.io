@@ -11,6 +11,7 @@ This repository contains standalone single-page applications. Each application m
 - Build mobile-first: include a viewport meta tag, make the layout work on narrow screens, and enhance it for larger screens.
 - Ensure content fits without unintended horizontal scrolling and controls are comfortable to use by touch.
 - Make every change in a way that preserves the standalone, self-contained nature of the application.
+- Add an "All tools" link at the top of each tool page pointing to `index.html`; the tools index itself does not need a self-link.
 
 ## Styling and visual consistency
 
