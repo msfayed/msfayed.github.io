@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <title>Base64 Encoder &amp; Decoder</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20242b;
+      --muted: #59636f;
+      --line: #e0e3e8;
+      --paper: #fff;
+      --canvas: #f5f4f0;
+      --accent: #3559e8;
+      --accent-strong: #2343c7;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; }
+    button, select, textarea { font: inherit; }
+    .page { width: min(100% - 32px, 1040px); margin: auto; padding: 30px 0 42px; }
+    .back-link { display: inline-flex; min-height: 44px; align-items: center; color: var(--accent-strong); }
+    h1 { margin: 22px 0 12px; font-size: clamp(1.8rem, 6vw, 2.6rem); }
+    .intro, .help, .message { color: var(--muted); line-height: 1.6; }
+    .intro { max-width: 720px; margin: 0 0 24px; }
+    .panel {
+      min-width: 0;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: 0 8px 26px rgb(26 35 54 / 5%);
+    }
+    .settings, .workspace { display: grid; gap: 18px; }
+    .field { display: grid; gap: 8px; min-width: 0; }
+    label { font-weight: 700; }
+    select, textarea {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      color: var(--ink);
+    }
+    textarea { display: block; min-height: 280px; margin-top: 12px; resize: vertical; border-radius: 11px; line-height: 1.6; }
+    .help { font-size: 0.85rem; margin: 12px 0 0; }
+    .workspace { margin-top: 18px; }
+    .swap-controls { display: flex; align-items: center; justify-content: center; }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+    button {
+      min-height: 44px;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover:not(:disabled) { background: #f1f3ff; }
+    .primary { border: 0; border-radius: 999px; background: var(--accent); color: white; }
+    .primary:hover:not(:disabled) { background: var(--accent-strong); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    :focus-visible { outline: 3px solid rgb(53 89 232 / 35%); outline-offset: 2px; }
+    .message { min-height: 1.6em; margin: 16px 0 0; overflow-wrap: anywhere; }
+    .message.error { color: #b42318; }
+    @media (min-width: 760px) {
+      .settings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .workspace { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+      .page { padding-top: 40px; }
+      textarea { min-height: 350px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <a class="back-link" href="index.html">All tools</a>
+    <h1>Base64 Encoder &amp; Decoder</h1>
+    <p class="intro">Convert text to Base64 or decode Base64 back to text. Everything runs locally, even offline. Base64 is an encoding, not encryption.</p>
+    <form id="converter">
+      <div class="panel">
+        <div class="settings">
+          <div class="field">
+            <label for="operation">Operation</label>
+            <select id="operation">
+              <option value="encode">Encode text to Base64</option>
+              <option value="decode">Decode Base64 to text</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="encoding">Character encoding</label>
+            <select id="encoding" aria-describedby="encoding-help">
+              <option value="utf-8" selected>UTF-8</option>
+              <option value="utf-16le">UTF-16 Little Endian</option>
+              <option value="utf-16be">UTF-16 Big Endian</option>
+              <option value="windows-1256">Windows Arabic (Windows-1256)</option>
+              <option value="latin1">ISO-8859-1 (Latin-1)</option>
+              <option value="ascii">ASCII</option>
+            </select>
+          </div>
+        </div>
+        <p class="help" id="encoding-help">When encoding, this converts input text into bytes. When decoding, this interprets the decoded bytes as text. UTF-8 supports Arabic and emoji. Windows Arabic uses Windows-1256 and rejects unsupported characters. UTF-16 uses the selected byte order without adding or removing a byte-order mark.</p>
+      </div>
+      <div class="workspace">
+        <section class="panel" aria-labelledby="input-label">
+          <label id="input-label" for="input">Input text</label>
+          <textarea id="input" spellcheck="false" dir="auto" aria-describedby="input-help"></textarea>
+          <p class="help" id="input-help">Enter the text you want to encode.</p>
+          <div class="actions">
+            <button class="primary" id="convert" type="submit">Encode</button>
+            <button id="clear" type="button">Clear</button>
+          </div>
+        </section>
+        <div class="swap-controls">
+          <button id="swap" type="button" disabled aria-label="Swap input and output and reverse operation" title="Exchange the contents and switch Encode/Decode">Swap</button>
+        </div>
+        <section class="panel" aria-labelledby="output-label">
+          <label id="output-label" for="output">Base64 output</label>
+          <textarea id="output" readonly spellcheck="false" dir="ltr"></textarea>
+          <div class="actions">
+            <button id="copy" type="button" disabled>Copy output</button>
+          </div>
+        </section>
+      </div>
+    </form>
+    <p class="message" id="message" role="status" aria-live="polite"></p>
+  </main>
+  <script>
+    (() => {
+      const operation = document.getElementById("operation");
+      const encoding = document.getElementById("encoding");
+      const input = document.getElementById("input");
+      const output = document.getElementById("output");
+      const copy = document.getElementById("copy");
+      const swap = document.getElementById("swap");
+      const message = document.getElementById("message");
+      const chunkSize = 32768;
+
+      function setMessage(text, error = false) {
+        message.textContent = text;
+        message.classList.toggle("error", error);
+      }
+      function invalidate() {
+        output.value = "";
+        copy.disabled = true;
+        swap.disabled = true;
+        setMessage("");
+      }
+      function validateUnicode(text) {
+        for (const character of text) {
+          const point = character.codePointAt(0);
+          if (point >= 0xd800 && point <= 0xdfff) {
+            throw new Error("The text contains an unpaired Unicode surrogate.");
+          }
+        }
+      }
+      function encodeText(text) {
+        validateUnicode(text);
+        const format = encoding.value;
+        if (format === "utf-8") return new TextEncoder().encode(text);
+        if (format === "windows-1256") {
+          const decoder = new TextDecoder("windows-1256", { fatal: true });
+          const characters = decoder.decode(Uint8Array.from({ length: 256 }, (_, byte) => byte));
+          const byteMap = new Map(Array.from(characters, (character, byte) => [character, byte]));
+          const bytes = new Uint8Array(text.length);
+          for (let i = 0; i < text.length; i++) {
+            const byte = byteMap.get(text[i]);
+            if (byte === undefined) {
+              throw new Error("The input contains characters not supported by Windows Arabic (Windows-1256). Choose UTF-8 for Unicode text.");
+            }
+            bytes[i] = byte;
+          }
+          return bytes;
+        }
+        if (format === "utf-16le" || format === "utf-16be") {
+          const bytes = new Uint8Array(text.length * 2);
+          const view = new DataView(bytes.buffer);
+          for (let i = 0; i < text.length; i++) {
+            view.setUint16(i * 2, text.charCodeAt(i), format === "utf-16le");
+          }
+          return bytes;
+        }
+        const max = format === "ascii" ? 127 : 255;
+        const bytes = new Uint8Array(text.length);
+        for (let i = 0; i < text.length; i++) {
+          const point = text.charCodeAt(i);
+          if (point > max) {
+            throw new Error(`The input contains characters not supported by ${format === "ascii" ? "ASCII" : "Latin-1"}. Choose UTF-8 for Unicode text.`);
+          }
+          bytes[i] = point;
+        }
+        return bytes;
+      }
+      function fromCodeUnits(units) {
+        const chunks = [];
+        for (let i = 0; i < units.length; i += chunkSize) {
+          chunks.push(String.fromCharCode(...units.subarray(i, i + chunkSize)));
+        }
+        return chunks.join("");
+      }
+      function decodeText(bytes) {
+        const format = encoding.value;
+        if (format === "windows-1256") {
+          return new TextDecoder("windows-1256", { fatal: true }).decode(bytes);
+        }
+        if (format === "utf-8") {
+          try {
+            return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
+          } catch (error) {
+            throw new Error("The decoded bytes are not valid UTF-8. Choose the encoding used by the original text.", { cause: error });
+          }
+        }
+        if (format === "utf-16le" || format === "utf-16be") {
+          if (bytes.length % 2 !== 0) throw new Error("UTF-16 requires an even number of bytes.");
+          const units = new Uint16Array(bytes.length / 2);
+          const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+          for (let i = 0; i < units.length; i++) {
+            units[i] = view.getUint16(i * 2, format === "utf-16le");
+          }
+          const text = fromCodeUnits(units);
+          validateUnicode(text);
+          return text;
+        }
+        if (format === "ascii" && bytes.some((byte) => byte > 127)) {
+          throw new Error("The decoded bytes are not valid ASCII. Choose the encoding used by the original text.");
+        }
+        return fromCodeUnits(bytes);
+      }
+      function toBase64(bytes) { return btoa(fromCodeUnits(bytes)); }
+      function fromBase64(text) {
+        const compact = text.replace(/[ \t\r\n\f]/g, "");
+        if (!/^[A-Za-z0-9+/]*={0,2}$/.test(compact) ||
+            compact.length % 4 === 1 ||
+            (compact.includes("=") && compact.length % 4 !== 0)) {
+          throw new Error("Invalid Base64. Use standard Base64 characters with valid or omitted trailing padding.");
+        }
+        const padded = compact.padEnd(Math.ceil(compact.length / 4) * 4, "=");
+        let binary;
+        try {
+          binary = atob(padded);
+        } catch (error) {
+          throw new Error("Invalid Base64 padding or data.", { cause: error });
+        }
+        const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+        if (toBase64(bytes) !== padded) throw new Error("Invalid Base64: non-zero padding bits.");
+        return bytes;
+      }
+      function updateOperation() {
+        const decoding = operation.value === "decode";
+        document.getElementById("input-label").textContent = decoding ? "Base64 input" : "Input text";
+        document.getElementById("output-label").textContent = decoding ? "Decoded text" : "Base64 output";
+        document.getElementById("convert").textContent = decoding ? "Decode" : "Encode";
+        document.getElementById("input-help").textContent = decoding
+          ? "Enter standard Base64. Spaces and line breaks are ignored; trailing padding is optional."
+          : "Enter the text you want to encode.";
+        input.dir = decoding ? "ltr" : "auto";
+        output.dir = decoding ? "auto" : "ltr";
+        invalidate();
+      }
+      document.getElementById("converter").addEventListener("submit", (event) => {
+        event.preventDefault();
+        invalidate();
+        try {
+          const decoding = operation.value === "decode";
+          const bytes = decoding ? fromBase64(input.value) : encodeText(input.value);
+          output.value = decoding ? decodeText(bytes) : toBase64(bytes);
+          copy.disabled = output.value.length === 0;
+          swap.disabled = output.value.length === 0;
+          setMessage(`${decoding ? "Decoded" : "Encoded"} ${bytes.length} bytes successfully.`);
+        } catch (error) {
+          console.error("Base64 conversion failed:", error);
+          setMessage(error instanceof Error ? error.message : "Conversion failed.", true);
+        }
+      });
+      operation.addEventListener("change", updateOperation);
+      encoding.addEventListener("change", invalidate);
+      input.addEventListener("input", invalidate);
+      swap.addEventListener("click", () => {
+        const previousInput = input.value;
+        const previousOutput = output.value;
+        operation.value = operation.value === "encode" ? "decode" : "encode";
+        updateOperation();
+        input.value = previousOutput;
+        output.value = previousInput;
+        copy.disabled = output.value.length === 0;
+        swap.disabled = output.value.length === 0;
+        setMessage("Input and output swapped. Operation reversed.");
+        input.focus();
+      });
+      document.getElementById("clear").addEventListener("click", () => {
+        input.value = "";
+        invalidate();
+        setMessage("Input and output cleared.");
+        input.focus();
+      });
+      copy.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(output.value);
+          setMessage("Output copied to the clipboard.");
+        } catch (error) {
+          console.error("Clipboard copy failed:", error);
+          output.focus();
+          output.select();
+          setMessage("Could not copy automatically. Select the output and copy it manually.", true);
+        }
+      });
+      updateOperation();
+    })();
+  </script>
+</body>
+</html>
